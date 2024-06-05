@@ -8,6 +8,9 @@
         <el-descriptions-item :label="t('公告标题')">{{
           inputData.billboardTitleCn
         }}</el-descriptions-item>
+        <el-descriptions-item :label="t('公告分类')">{{
+          billClassifyCNTitle.zh
+        }}</el-descriptions-item>
         <el-descriptions-item :label="t('公告类型')">{{
           inputData.billboardTypeCn
         }}</el-descriptions-item>
@@ -19,13 +22,16 @@
         <template #title>
           <el-tag>{{ t('英文') }}</el-tag>
         </template>
-        <el-descriptions-item :label="t('公告标题')">{{
+        <el-descriptions-item label="Announcement Title">{{
           inputData.billboardTitleEn
         }}</el-descriptions-item>
-        <el-descriptions-item :label="t('公告类型')">{{
+        <el-descriptions-item label="Announcement Classify">{{
+          billClassifyCNTitle.en
+        }}</el-descriptions-item>
+        <el-descriptions-item label="Announcement Type">{{
           inputData.billboardTypeEn
         }}</el-descriptions-item>
-        <el-descriptions-item :label="t('公告内容')"
+        <el-descriptions-item label="Announcement Content"
           >{{ inputData.billboardContentEn }}
         </el-descriptions-item>
       </el-descriptions>
@@ -49,11 +55,18 @@
 import { t } from '@/plugins/i18n';
 import { EidtAndUpdateFormType } from '../utils/types';
 import { message } from '@/utils/message';
+import { PLAY_MAP } from '@/utils/maps/sports_map';
 
 const props = defineProps<{
   inputData: EidtAndUpdateFormType;
   isOnlyShow?: boolean;
 }>();
+
+const billClassifyCNTitle = computed(() => {
+  const d = PLAY_MAP.find(item => item.idx === props.inputData.billClassify);
+  const { zh, en } = d.val;
+  return { zh, en };
+});
 
 const confirmPublishClick = async () => {
   const url = props.inputData.id ? 'updateBillboardList' : 'addSBillboard';

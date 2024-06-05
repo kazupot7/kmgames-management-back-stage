@@ -1,14 +1,8 @@
-import { storageLocal } from '@pureadmin/utils';
-
-interface ILocaleType {
-  locale: 'zh' | 'en' | 'fr';
-}
+import { PLAY_MAP } from '@/utils/maps/sports_map';
+import { getLan } from '@/utils/utilFn';
 
 const getLangueageRenderData = ([zhContent, enContent]: string[]) => {
-  const lan =
-    (storageLocal().getItem('responsive-locale') as ILocaleType)?.locale ??
-    'zh';
-  return lan === 'zh' ? zhContent : enContent;
+  return getLan() === 'zh' ? zhContent : enContent;
 };
 
 export const columns: TableColumnList = [
@@ -16,6 +10,15 @@ export const columns: TableColumnList = [
     label: t('序号'),
     type: 'index',
     minWidth: 100
+  },
+  {
+    label: t('公告分类'),
+    minWidth: 150,
+    formatter: ({ billClassify }): string => {
+      return (
+        PLAY_MAP.find(item => item.idx === billClassify)?.val[getLan()] ?? '-'
+      );
+    }
   },
   {
     label: t('公告标题'),

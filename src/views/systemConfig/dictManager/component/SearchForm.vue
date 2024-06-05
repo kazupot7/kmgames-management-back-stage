@@ -51,7 +51,7 @@ import RefreshIcon from '@iconify-icons/ep/refresh';
 import { useRenderIcon } from '@/components/ReIcon/src/hooks';
 import { type FormInstance } from 'element-plus';
 import { searchFormType } from '../utils/types';
-import { PLAY_MAP } from '../utils/map';
+import { PLAY_MAP } from '@/utils/maps/sports_map';
 import { getLan } from '@/utils/utilFn';
 
 defineProps<{

@@ -1,5 +1,5 @@
 import { getLan } from '@/utils/utilFn';
-import { PLAY_MAP } from '../utils/map';
+import { PLAY_MAP } from '@/utils/maps/sports_map';
 
 export const columns: TableColumnList = [
   {

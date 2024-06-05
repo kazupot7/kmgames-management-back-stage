@@ -17,7 +17,7 @@ export const removeEmptyStringKeys = (obj: MyObj): MyObj => {
   }, {});
 };
 
-export const getLan = () => {
+export const getLan = (): 'zh' | 'en' | 'fr' => {
   const lan =
     (storageLocal().getItem('responsive-locale') as ILocaleType)?.locale ?? 'zh';
   return lan;

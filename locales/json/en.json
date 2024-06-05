@@ -136,9 +136,6 @@
   "k4e1c5569": "Match Ended",
   "k7e337a83": "Pending Start",
   "k-7e0a1adf": "Event has to be in 1 hour",
-  "k15fa6f5f": "Not Pair",
-  "k5a05c939": "Successfully Pair",
-  "k2770a55b": "Pairing Failed",
   "k739619ff": "Pairing Result - Panda",
   "k496bd10b": "Please select a country",
   "k-547e156": "Country/Region",
@@ -493,11 +490,8 @@
   "k696de1e": "Are you sure you want to close sending?",
   "k-68833ba7": "Are you sure you want to enable sending?",
   "k7468d32a": "Chinese title cannot be empty",
-  "k-9fbc29d": "English title cannot be empty",
-  "k1280f9fe": "English type cannot be empty",
   "k-6f13e849": "Chinese type cannot be empty",
   "k-6ecefba0": "Chinese content cannot be empty",
-  "k5c91f6db": "English cannot be empty",
   "k530f5951": "View",
   "k7126e8f7": "Modify public",
   "k-36429779": "Agent",
@@ -564,5 +558,9 @@
   "k-517cc41f": "数据字典",
   "k-79fa4b0e": "修改人",
   "k171feffc": "编辑字典",
-  "k4e977baa": "Value不能为空"
+  "k4e977baa": "Value不能为空",
+  "k-5cce50c1": "公告分类",
+  "k11dce9e0": "新增账号成功",
+  "k551b0348": "密码",
+  "k-5da30ca7": "公告分类不能为空"
 }

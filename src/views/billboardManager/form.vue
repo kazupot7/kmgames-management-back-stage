@@ -9,6 +9,17 @@
         class="pr-10"
         label-width="100px"
       >
+        <el-form-item :label="`${t('公告分类')}:`" prop="billClassify">
+          <el-select v-model="newFormInline.billClassify" clearable filterable>
+            <el-option
+              :label="item.val[lan]"
+              :value="item.idx"
+              v-for="(item, index) in PLAY_MAP"
+              :key="index"
+            />
+          </el-select>
+        </el-form-item>
+
         <el-form-item
           :label="`${t('公告标题')}:`"
           :prop="lan === 'zh' ? 'billboardTitleCn' : 'billboardTitleEn'"
@@ -66,8 +77,6 @@ import { ref } from 'vue';
 import { formRules } from './utils/rule';
 import { t } from '@/plugins/i18n';
 import { FormInstance } from 'element-plus/es/components/form';
-// import { message } from '@/utils/message';
-// import { removeEmptyStringKeys } from '@/utils/utilFn';
 import LanguageGroup from '@/components/Form/LanguageGroup.vue';
 import ConfirmDialog from './component/ConfirmDialog.vue';
 import LanguageInput from '@/components/LanguageInput.vue';
@@ -78,6 +87,7 @@ import {
 } from '@/components/ReDialog';
 import { EidtAndUpdateFormType } from './utils/types';
 import { useCommonStore } from '@/store/common';
+import { PLAY_MAP } from '@/utils/maps/sports_map';
 
 const props = defineProps<{
   renderData: EidtAndUpdateFormType;
