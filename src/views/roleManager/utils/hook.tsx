@@ -73,9 +73,12 @@ export function useRoleHook() {
   const updateUserStatus = async (row: RoleAPI.querySysAccountListData) => {
     if (row.userCount > 0 && +row.status === 1) {
       return ElMessageBox.confirm(
-        <div class="text-center">{`${t('该角色下仍有')}${row.userCount}${t(
-          '个用户'
-        )},${t('禁用此角色将导致这些用户无法访问系统。是否继续?')}`}</div>,
+        <div class="text-center">
+          {t(
+            '该角色下仍有{n}个用户,禁用此角色将导致这些用户无法访问系统。是否继续?',
+            { n: row.userCount }
+          )}
+        </div>,
         t('操作提示'),
         {
           center: true,
