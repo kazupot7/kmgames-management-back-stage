@@ -20,6 +20,7 @@ export const SysTemConfigData = {
   sysMaintainUpdateStatus: (data: {
     id: number;
     status: number;
+    platformType: number;
   }) => http.request<SysTemConfigAPI.sysMaintainUpdateStatusResType>("post", "/sysMaintain/v1/updateStatus", { data }),
 
 };
