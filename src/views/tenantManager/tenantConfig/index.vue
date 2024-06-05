@@ -9,7 +9,11 @@
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
-        <el-button type="primary" @click="openDialog(t('新增商户'))"  v-if="hasAuth('TENANTMANAGERADD')">
+        <el-button
+          type="primary"
+          @click="openDialog(t('新增商户'))"
+          v-if="hasAuth('TENANTMANAGERADD')"
+        >
           {{ t('新增商户') }}
         </el-button>
       </template>
