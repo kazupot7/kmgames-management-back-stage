@@ -4,7 +4,7 @@
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
-        <el-button type="primary" @click="openDialog(t('新增账号'))">
+        <el-button type="primary" @click="openDialog(t('新增账号'))"  v-if="hasAuth('USERMANAGERADD')">
           {{ t('新增账号') }}
         </el-button>
       </template>
@@ -53,6 +53,7 @@
               type="primary"
               size="small"
               @click="resetPasswordClick(row)"
+              v-if="hasAuth('USERMANAGERUPDATEPROFILE')"
             >
               {{ t('重置') }}
             </el-button>
@@ -64,6 +65,7 @@
               type="primary"
               :size="size"
               @click="openDialog(t('编辑账号'), row)"
+              v-if="hasAuth('USERMANAGERUPDATE')"
             >
               {{ t('编辑') }}
             </el-button>
@@ -73,6 +75,7 @@
               link
               type="danger"
               :size="size"
+              v-if="hasAuth('USERMANAGERDELETE')"
             >
               {{ t('删除') }}
             </el-button>
@@ -93,6 +96,7 @@ import { columns } from './component/TableColumnList';
 import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
 const { switchStyle } = usePublicHooks();
+import { hasAuth } from '@/router/utils';
 defineOptions({ name: 'USERMANAGER' });
 
 const {
