@@ -1,8 +1,6 @@
 import { message } from '@/utils/message';
 import editForm from '../form.vue';
 import type { PaginationProps } from '@pureadmin/table';
-// import { addDialog } from '@/components/ReDialog';
-// import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
 import { columns } from '../component/TableColumnList';
 import { removeEmptyStringKeys } from '@/utils/utilFn';
@@ -31,18 +29,18 @@ export function useRoleHook() {
     endCreatedAt: ''
   });
 
-  function handleTableWidthChange(val: number) {
+  const handleTableWidthChange = (val: number) => {
     pagination.pageSize = val;
     onSearch();
-  }
+  };
 
-  function handleCurrentChange(val: number) {
+  const handleCurrentChange = (val: number) => {
     pagination.currentPage = val;
     onSearch();
-  }
+  };
 
   //- 初始化
-  async function onSearch(type?: string) {
+  const onSearch = async (type?: string) => {
     try {
       if (type === 'reload') pagination.currentPage = 1;
       loading.value = true;
@@ -51,16 +49,16 @@ export function useRoleHook() {
         pageSize: pagination.pageSize,
         pageNum: pagination.currentPage
       });
+      loading.value = false;
       if (res.code) return message(res.msg, { type: 'error' });
       res.data.list.forEach(item => (item.status = !!item.status));
       dataList.length = 0;
       dataList.push(...res.data.list);
       pagination.total = res.data.total;
-      loading.value = false;
     } catch (error) {
       loading.value = false;
     }
-  }
+  };
 
   //- 修改启用状态
   const updateUserStatus = async (row: RoleAPI.querySysAccountListData) => {
@@ -161,6 +159,7 @@ export function useRoleHook() {
   onMounted(() => {
     onSearch();
   });
+
   return {
     loading,
     columns,

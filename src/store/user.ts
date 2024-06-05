@@ -5,11 +5,11 @@ import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
 import { useMultiTagsStoreHook } from "@/store/multiTags";
-import { type DataInfo, removeStorage, sessionKey, TokenKey } from "@/utils/auth";
+import { removeStorage, sessionKey, TokenKey } from "@/utils/auth";
 
 export const useUserStore = defineStore('USERSTATE', {
   state: (): userType => ({
-    roles: storageSession().getItem<DataInfo<{ id: number; name: string; resources: null }>>(sessionKey)?.roles.map(_ => _.name) ?? [],
+    roles: [],
     userInfo: {} as UserAPI.LoginData,
     token: '',
   }),

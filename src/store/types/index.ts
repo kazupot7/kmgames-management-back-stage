@@ -50,3 +50,7 @@ export type MatchType = {
   countryList: MetadataAPI.getCountryListType[];
   settleRequestLoading: boolean;
 };
+
+export type CommonType = {
+  inputLanType: 'zh' | 'en';
+};

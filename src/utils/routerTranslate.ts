@@ -7,5 +7,6 @@ export const routerTranslate = () => {
     t('角色管理'),
     t('DP体育总控后台'),
     t('主页'),
+    t('公告管理'),
   ]
 }

@@ -217,3 +217,7 @@ input[type='number'] {
 .el-dialog__header.show-close {
   padding-right: 0 !important;
 }
+
+.el-card.is-always-shadow {
+  box-shadow: none !important;
+}

@@ -56,7 +56,7 @@ class PureHttp {
         if (whiteList.some(_ => config.url.indexOf(_) < 0)) {
           const token: string = storageSession().getItem(TokenKey) ?? '';
           if (token) {
-            config.headers["Authorization"] = formatToken(token);
+            config.headers["Accesstoken"] = token;
           }
         }
         return config;
