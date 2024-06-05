@@ -1,10 +1,19 @@
 <template>
   <div class="main">
-    <SearchForm :form="form" :loading="loading" @on-search="onSearch" />
+    <SearchForm
+      :form="form"
+      :loading="loading"
+      @on-search="onSearch"
+      :tenantList="tenantList"
+    />
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
-        <el-button type="primary" @click="openDialog(t('新增白名单'))" v-if="hasAuth('WHITEMANAGERADD')">
+        <el-button
+          type="primary"
+          @click="openDialog(t('新增白名单'))"
+          v-if="hasAuth('WHITEMANAGERADD')"
+        >
           {{ t('新增') }}
         </el-button>
       </template>

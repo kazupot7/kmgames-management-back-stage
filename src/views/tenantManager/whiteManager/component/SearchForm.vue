@@ -5,20 +5,26 @@
     :model="form"
     class="search-form bg-bg_color w-[99/100] pl-8 pt-[12px]"
   >
-    <el-form-item :label="`${t('商户名称')}:`" prop="name">
-      <el-input
-        v-model="form.name"
-        :placeholder="t('请输入商户名称')"
+    <el-form-item :label="`${t('商户名称')}:`" prop="id">
+      <el-select
+        v-model="form.tenantId"
+        :placeholder="t('请选择')"
         clearable
-        maxlength="30"
-        v-enter="search"
-        class="!w-[200px]"
-      />
+        filterable
+        class="!w-[150px]"
+      >
+        <el-option
+          :value="item.id"
+          :label="item.name"
+          v-for="item in tenantList"
+          :key="item.id"
+        />
+      </el-select>
     </el-form-item>
 
-    <el-form-item :label="`${t('商户编号/ID')}:`" prop="createdBy">
+    <el-form-item :label="`${t('商户编号/ID')}:`" prop="tenantCode">
       <el-input
-        v-model="form.createdBy"
+        v-model="form.tenantCode"
         :placeholder="t('请输入商户编号或ID')"
         clearable
         maxlength="20"
@@ -85,6 +91,7 @@ import dayjs from 'dayjs';
 const props = defineProps<{
   loading: boolean;
   form: searchFormType;
+  tenantList: TenantAPI.getAllSimplifiedTenant[];
 }>();
 const selectDate = ref('');
 const formRef = ref();
