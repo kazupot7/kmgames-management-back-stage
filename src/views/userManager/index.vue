@@ -92,9 +92,7 @@ import SearchForm from './component/SearchForm.vue';
 import { columns } from './component/TableColumnList';
 import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
-
 const { switchStyle } = usePublicHooks();
-
 defineOptions({ name: 'USERMANAGER' });
 
 const {

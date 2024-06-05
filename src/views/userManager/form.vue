@@ -115,12 +115,17 @@ const confirmClick = () => {
         ) as UserMangerAPI.addSysAccountRes),
         status: Number(newFormInline.status)
       });
-
       message(res.msg, { type: res.code ? 'error' : 'success' });
-      emits('closeDialog', res.code ? '' : 'reloadTable');
+      emits(
+        'closeDialog',
+        res.code ? '' : 'reloadTable',
+        !res.code && !newFormInline.id
+      );
     }
   });
 };
+
+defineExpose({ newFormInline });
 </script>
 
 <style lang="scss"></style>
