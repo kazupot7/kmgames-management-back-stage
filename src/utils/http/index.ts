@@ -20,7 +20,7 @@ const defaultConfig: AxiosRequestConfig = {
   timeout: 20000,
   headers: {
     Accept: "application/json, text/plain, */*",
-    "Content-Type": "application/json",
+    // "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest"
   },
   paramsSerializer: {

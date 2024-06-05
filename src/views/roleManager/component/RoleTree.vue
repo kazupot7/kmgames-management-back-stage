@@ -14,6 +14,7 @@
       :props="dataProps"
       default-expand-all
       show-checkbox
+      class="role_tree"
       :check-on-click-node="true"
       node-key="id"
       @check-change="handleCheckChange"
@@ -138,6 +139,10 @@ const handleCheckChange = () => {
 :deep() {
   .el-tree-node__content {
     height: 32px;
+  }
+  .role_tree {
+    max-height: 600px;
+    overflow-y: auto;
   }
 }
 </style>

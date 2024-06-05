@@ -71,9 +71,9 @@ export function useNav() {
   /** 动态title */
   function changeTitle(meta: routeMetaType) {
     const Title = getConfig().Title;
-    if (Title) document.title = `${t(meta.title)
+    if (Title) document.title = `${meta.title
       } | ${Title} `;
-    else document.title = t(meta.title);
+    else document.title = meta.title;
   }
 
   /** log out and log in */

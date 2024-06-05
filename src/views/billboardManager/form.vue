@@ -114,21 +114,6 @@ const confirmClick = () => {
       });
     }
   });
-
-  /* ruleFormRef.value.validate(async v => {
-    const requestAPI = newFormInline.id ? 'updateSysAccount' : 'addSysAccount';
-    if (v) {
-      const res = await API[requestAPI]({
-        ...(removeEmptyStringKeys(
-          newFormInline
-        ) as UserMangerAPI.addSysAccountRes),
-        status: Number(newFormInline.status)
-      });
-
-      message(res.msg, { type: res.code ? 'error' : 'success' });
-      emits('closeDialog', res.code ? '' : 'reloadTable');
-    }
-  }); */
 };
 
 const lan = computed(() => {

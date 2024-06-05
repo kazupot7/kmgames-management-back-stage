@@ -2,24 +2,26 @@ import { user } from "./user";
 import { metaData } from "./metadata";
 import { saleData } from "./sale";
 import { sattleData } from "./sattle";
-import { virtualData } from "./virtual";
+import { tenantData } from "./tenant";
 import { userMangerData } from "./userManger";
 import { historyData } from "./history";
 import { roleData } from "./role";
 import { operationLogData } from "./operationLog";
 import { esportsSettlement } from "./esportsSettlement";
 import { billboardManagerData } from "./billboardManager";
+import { SysTemConfigData } from "./systemConfig";
 
 export const API = {
   ...user,
   ...metaData,
   ...saleData,
   ...sattleData,
-  ...virtualData,
+  ...tenantData,
   ...userMangerData,
   ...historyData,
   ...operationLogData,
   ...roleData,
   ...esportsSettlement,
   ...billboardManagerData,
+  ...SysTemConfigData,
 }; 3
