@@ -11,7 +11,6 @@
       <template v-slot="{ size, dynamicColumns }">
         <pure-table
           align-whole="center"
-          showOverflowTooltip
           table-layout="auto"
           :loading="loading"
           :size="size"

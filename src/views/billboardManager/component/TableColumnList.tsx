@@ -36,7 +36,12 @@ export const columns: TableColumnList = [
     label: t('公告内容'),
     minWidth: 230,
     formatter: ({ billboardContentCn, billboardContentEn }): string => {
-      return getLangueageRenderData([billboardContentCn, billboardContentEn]);
+      return (
+        getLangueageRenderData([billboardContentCn, billboardContentEn]).slice(
+          0,
+          10
+        ) + '...'
+      );
     }
   },
   {
