@@ -31,6 +31,6 @@ export const PAYMENT_TYPE = [
 ]
 //- 结算币种
 export const CURRENCY_TYPE = [
-  { key: 1, val: t('人名币') },
+  { key: 1, val: t('人民币') },
   { key: 2, val: t('USDT') },
 ]

@@ -29,7 +29,7 @@
             <el-form-item prop="username">
               <el-input
                 clearable
-                v-model="ruleForm.username"
+                v-model.trim="ruleForm.username"
                 maxlength="30"
                 :placeholder="t('输入您的用户名')"
                 :prefix-icon="useRenderIcon(User)"
@@ -40,7 +40,7 @@
               <el-input
                 clearable
                 show-password
-                v-model="ruleForm.password"
+                v-model.trim="ruleForm.password"
                 :placeholder="t('输入密码')"
                 :prefix-icon="useRenderIcon(Lock)"
               />

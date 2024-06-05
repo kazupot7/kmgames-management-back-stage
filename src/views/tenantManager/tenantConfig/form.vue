@@ -268,8 +268,10 @@
             prop="baseUrlType_10"
           >
             <el-input
+              type="textarea"
+              row="3"
               v-model="newFormInline.baseUrlType_10"
-              :placeholder="t('请输入API地址')"
+              :placeholder="t('多条API地址请使用英文逗号分隔')"
             />
           </el-form-item>
           <el-form-item
@@ -278,8 +280,10 @@
             prop="baseUrlType_20"
           >
             <el-input
+              type="textarea"
+              row="3"
               v-model="newFormInline.baseUrlType_20"
-              :placeholder="t('请输入WEB地址')"
+              :placeholder="t('多条WEB地址请使用英文逗号分隔')"
             />
           </el-form-item>
           <el-form-item
@@ -288,8 +292,10 @@
             prop="baseUrlType_21"
           >
             <el-input
+              type="textarea"
+              row="3"
+              :placeholder="t('多条H5地址请使用英文逗号分隔')"
               v-model="newFormInline.baseUrlType_21"
-              :placeholder="t('请输入H5地址')"
             />
           </el-form-item>
         </el-col>
