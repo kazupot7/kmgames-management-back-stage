@@ -21,8 +21,9 @@
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
           <img :src="userAvatar" />
-          <p>admin</p>
-          <!-- <p v-if="username" class="dark:text-white">{{ username }}</p> -->
+          <p v-if="userStore.userInfo.name" class="dark:text-white ml-1">
+            {{ userStore.userInfo.name }}
+          </p>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
@@ -64,17 +65,13 @@ import Setting from '@iconify-icons/ri/settings-3-line';
 import LanguageNav from '@/components/LanguageNav/index.vue';
 import { t } from '@/plugins/i18n';
 import { useResetPasswordHook } from '@/hooks/resetPasswordHook';
+import { useUserStore } from '@/store/user';
 
-const {
-  layout,
-  logout,
-  onPanel,
-  pureApp,
-  // username,
-  userAvatar,
-  toggleSideBar
-} = useNav();
+const { layout, logout, onPanel, pureApp, userAvatar, toggleSideBar } =
+  useNav();
 const { openResetDialog } = useResetPasswordHook();
+
+const userStore = useUserStore();
 </script>
 
 <style lang="scss" scoped>
