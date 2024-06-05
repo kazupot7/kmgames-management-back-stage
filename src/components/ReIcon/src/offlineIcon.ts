@@ -38,16 +38,16 @@ import virtual from "@iconify-icons/ep/files";
 import systemConfig from '@iconify-icons/ri/list-unordered';
 import whiteManager from '@iconify-icons/ri/settings-3-line';
 
-addIcon("billboardManager", billboardManager);
-addIcon("userManager", userManager);
+// addIcon("billboardManager", billboardManager);
+// addIcon("userManager", userManager);
 addIcon("tenantManager", role);
-addIcon("roleManager", virtual);
+// addIcon("roleManager", virtual);
 addIcon("virtual", roleManager);
 addIcon("history", History);
 addIcon("operationLog", OperationLog);
 addIcon("systemConfig", systemConfig);
 // addIcon("whiteManager", whiteManager);
-addIcon("sysSwitch", whiteManager);
+// addIcon("sysSwitch", whiteManager);
 /* 菜单icon结束 */
 
 addIcon("configCenter", whiteManager);
