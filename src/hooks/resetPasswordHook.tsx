@@ -3,8 +3,6 @@ import ResetDialog from '@/components/ResetDialog/index.vue';
 
 export const useResetPasswordHook = () => {
   const resetFormRef = ref();
-  const isDisabled = ref(true);
-  const confirmLoading = ref(false);
 
   const openResetDialog = () => {
     addDialog({
@@ -12,38 +10,15 @@ export const useResetPasswordHook = () => {
       class: 'reset_dialog',
       width: '25%',
       center: true,
-      draggable: true,
       closeOnClickModal: false,
-      footerButtons: [
-        {
-          label: '取消',
-          type: 'info',
-          btnClick: ({ dialog: { options, index } }) => {
-            closeDialog(options, index);
-          }
-        },
-        {
-          label: '确认',
-          loading: confirmLoading.value,
-          type: 'primary',
-          disabled: isDisabled.value,
-          btnClick: ({ dialog: { options, index } }) => {
-            closeDialog(options, index);
-          }
-        }
-      ],
-      contentRenderer: () =>
+      hideFooter: true,
+      contentRenderer: ({ options, index }) =>
         h(ResetDialog, {
           ref: resetFormRef,
-          onChangeDisabledStatus: (_: boolean) => (isDisabled.value = _)
-        }),
-      beforeSure: (done, { options }) => {
-        const formRef = resetFormRef.value.getRef();
-        formRef.validate(async valid => {
-          if (valid) {
+          onCloseDialog: (_: boolean) => {
+            closeDialog(options, index);
           }
-        });
-      }
+        })
     });
   };
 

@@ -6,24 +6,22 @@ import { ESPORT_ID_MAP } from '@/utils/maps/sports_map';
 export const columns: TableColumnList = [
   {
     label: t('角色名称'),
-    prop: 'leagueId',
+    prop: 'name',
     headerRenderer: d => handleTableWidth(d, t('角色名称'), 'auto')
   },
   {
     label: t('创建时间'),
-    prop: 'countryId',
-    formatter: ({ countryId }) => parseCountry(countryId),
+    prop: 'createdAt',
     headerRenderer: d => handleTableWidth(d, t('创建时间'), 'auto')
   },
   {
     label: t('创建人'),
-    prop: 'leagueId188Bet',
+    prop: 'createdBy',
     headerRenderer: d => handleTableWidth(d, t('创建人'), 'auto')
   },
   {
     label: t('使用人数'),
-    formatter: ({ sportId }) =>
-      ESPORT_ID_MAP.find(item => item.value === sportId)?.label,
+    formatter: ({ userList }) => userList.length,
     headerRenderer: d => handleTableWidth(d, t('使用人数'), 'auto')
   },
   {
@@ -33,7 +31,8 @@ export const columns: TableColumnList = [
   },
   {
     label: t('备注'),
-    prop: 'leagueNameEn',
+    prop: 'comment',
+    formatter: ({ comment }) => comment ?? '-',
     headerRenderer: d => handleTableWidth(d, t('备注'), 'auto')
   },
   {

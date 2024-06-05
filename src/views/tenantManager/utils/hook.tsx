@@ -74,7 +74,6 @@ export function useMemberHook() {
       draggable: true,
       closeOnClickModal: false,
       alignCenter: true,
-
       contentRenderer: () => h(editForm, { ref: formRef }),
       beforeSure: (done, { options }) => {
         const FormRef = formRef.value.getRef();

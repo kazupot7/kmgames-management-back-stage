@@ -3,8 +3,9 @@ import { metaData } from "./metadata";
 import { saleData } from "./sale";
 import { sattleData } from "./sattle";
 import { virtualData } from "./virtual";
-import { esportData } from "./esports";
+import { userMangerData } from "./userManger";
 import { historyData } from "./history";
+import { roleData } from "./role";
 import { operationLogData } from "./operationLog";
 import { esportsSettlement } from "./esportsSettlement";
 
@@ -14,8 +15,9 @@ export const API = {
   ...saleData,
   ...sattleData,
   ...virtualData,
-  ...esportData,
+  ...userMangerData,
   ...historyData,
   ...operationLogData,
+  ...roleData,
   ...esportsSettlement
-};3
+}; 3

@@ -23,15 +23,15 @@
           @page-size-change="handleTableWidthChange"
           @page-current-change="handleCurrentChange"
         >
-          <template #status="{ row }">
+          <template #status="{ row }: { row: RoleAPI.querySysAccountListData }">
             <el-switch
-              v-model="test1"
+              v-model="row.status"
               :size="size"
               inline-prompt
               class="pure-datatheme"
               :active-text="t('开启')"
               :inactive-text="t('关闭')"
-              @change="testChange"
+              :before-change="() => updateUserStatus(row)"
               :style="switchStyle"
             />
           </template>
@@ -41,7 +41,7 @@
               link
               type="primary"
               :size="size"
-              @click="openRoleSettingDialog()"
+              @click="openRoleSettingDialog(row.id)"
             >
               {{ t('权限设置') }}
             </el-button>
@@ -54,7 +54,13 @@
             >
               {{ t('编辑') }}
             </el-button>
-            <el-button class="reset-margin" link type="danger" :size="size">
+            <el-button
+              class="reset-margin"
+              link
+              type="danger"
+              :size="size"
+              @click="handleDelete(row)"
+            >
               {{ t('删除') }}
             </el-button>
           </template>
@@ -73,9 +79,7 @@ import { usePublicHooks } from '@/hooks';
 
 defineOptions({ name: 'MEMBER' });
 const { tableHeaderStyle } = usePublicHooks();
-const test1 = ref(false);
 const { switchStyle } = usePublicHooks();
-const testChange = () => {};
 
 const {
   loading,
@@ -87,7 +91,9 @@ const {
   handleCurrentChange,
   form,
   openRoleDialog,
-  openRoleSettingDialog
+  openRoleSettingDialog,
+  updateUserStatus,
+  handleDelete
 } = useRoleHook();
 </script>
 

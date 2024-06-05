@@ -40,7 +40,7 @@ export type userType = {
   verifyCode?: string;
   currentPage?: number;
   token: string;
-  userInfo: UserAPI.Login_User
+  userInfo: UserAPI.LoginData
 };
 
 
