@@ -60,9 +60,31 @@ export function useRoleHook() {
     }
   };
 
+  const changeOpenStatus = async (row: RoleAPI.querySysAccountListData) => {
+    const res = await API.updateRoleStatus({
+      status: +row.status === 0 ? 1 : 0,
+      roleId: row.id
+    });
+    message(res.msg, { type: res.code ? 'error' : 'success' });
+    if (!res.code) onSearch();
+  };
+
   //- 修改启用状态
   const updateUserStatus = async (row: RoleAPI.querySysAccountListData) => {
-    return new Promise<boolean>((resolve, reject) => {
+    if (row.userCount > 0 && +row.status === 1) {
+      ElMessageBox.confirm(
+        <div class="text-center">{`${t('该角色下仍有')}${row.userCount}${t(
+          '个用户'
+        )},${t('禁用此角色将导致这些用户无法访问系统。是否继续?')}`}</div>,
+        t('操作提示'),
+        {
+          center: true,
+          type: 'warning'
+        }
+      )
+        .then(() => changeOpenStatus(row))
+        .catch(() => Promise.reject());
+    } else {
       ElMessageBox.confirm(
         +row.status === 1
           ? t('确定要关闭当前角色么？')
@@ -72,22 +94,8 @@ export function useRoleHook() {
           center: true,
           type: 'warning'
         }
-      )
-        .then(async () => {
-          const res = await API.updateRoleStatus({
-            status: +row.status === 0 ? 1 : 0,
-            roleId: row.id
-          });
-          if (res.code) {
-            reject();
-          } else {
-            resolve(true);
-            onSearch();
-          }
-          message(res.msg, { type: res.code ? 'error' : 'success' });
-        })
-        .catch(reject);
-    });
+      ).then(() => changeOpenStatus(row));
+    }
   };
 
   //- 角色弹窗
@@ -119,23 +127,31 @@ export function useRoleHook() {
 
   //- 删除角色
   const handleDelete = (row: RoleAPI.querySysAccountListData) => {
-    ElMessageBox.confirm(
-      `<div class="text-center">
+    if (row.userCount > 0) {
+      ElMessageBox.confirm(t('角色底下还有用户，不可删除'), t('操作无效'), {
+        confirmButtonText: t('朕知道了'),
+        showCancelButton: false,
+        center: true
+      });
+    } else {
+      ElMessageBox.confirm(
+        `<div class="text-center">
        <p>${'确定要删除角色'}${row.name}</br></p>
       <p>${t('角色删除后不可恢复')}</p>
       </div>`,
-      t('警告'),
-      {
-        confirmButtonText: t('提交'),
-        cancelButtonText: t('取消'),
-        center: true,
-        dangerouslyUseHTMLString: true
-      }
-    ).then(async () => {
-      const res = await API.deleteRole({ roleId: row.id });
-      message(res.msg, { type: res.code ? 'error' : 'success' });
-      if (!res.code) onSearch();
-    });
+        t('警告'),
+        {
+          confirmButtonText: t('提交'),
+          cancelButtonText: t('取消'),
+          center: true,
+          dangerouslyUseHTMLString: true
+        }
+      ).then(async () => {
+        const res = await API.deleteRole({ roleId: row.id });
+        message(res.msg, { type: res.code ? 'error' : 'success' });
+        if (!res.code) onSearch();
+      });
+    }
   };
 
   //- 权限设置弹窗

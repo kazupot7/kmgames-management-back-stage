@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { store } from "@/store";
 import { userType } from "./types";
 import { routerArrays } from "@/layout/types";
-import { router, resetRouter } from "@/router";
+import { resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
 import { useMultiTagsStoreHook } from "@/store/multiTags";
 import { removeStorage, sessionKey, TokenKey } from "@/utils/auth";
@@ -24,9 +24,8 @@ export const useUserStore = defineStore('USERSTATE', {
       removeStorage();
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
-      this.signOut();
       this.userInfo = {};
-      router.push("/login");
+      window.location.reload();
     },
     async signOut() {
       API.loginOut({

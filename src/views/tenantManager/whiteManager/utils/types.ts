@@ -1,8 +1,10 @@
 
 export type searchFormType = {
-  name: string;
+  tenantId: string;
   createdBy: string;
   status: string;
   startCreatedAt: string;
   endCreatedAt: string;
+  tenantCode?: string | number;
+
 }
