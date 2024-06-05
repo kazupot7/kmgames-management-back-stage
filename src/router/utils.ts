@@ -14,7 +14,8 @@ import {
   isAllEmpty,
   intersection,
   storageSession,
-  isIncludeAllChildren
+  isIncludeAllChildren,
+  storageLocal
 } from "@pureadmin/utils";
 import { getConfig } from "@/config";
 import { menuType } from "@/layout/types";
@@ -150,8 +151,22 @@ function addPathMatch() {
   }
 }
 
+interface ILocaleType {
+  locale: 'zh' | 'en' | 'fr';
+}
+const translateLan = (list) => {
+  const lan =
+    (storageLocal().getItem('responsive-locale') as ILocaleType)?.locale ?? 'zh';
+  list.forEach(item => {
+    if (item.children) translateLan(item.children)
+    item.meta.title = lan === 'zh' ? item.meta.title : item.meta.enTitle
+  })
+}
+
+
 /** 处理动态路由（后端返回的路由） */
 function handleAsyncRoutes(routeList) {
+  translateLan(routeList);
   if (routeList.length === 0) {
     usePermissionStoreHook().handleWholeMenus(routeList);
   } else {
@@ -193,7 +208,6 @@ const transformItem = (item: UserAPI.RouterResData) => {
   };
 
   const hasChildrenWithZeroType = item.childResourceList.some(child => child.type === 0);
-
   if (hasChildrenWithZeroType) {
     (baseItem as any).children = item.childResourceList.map(transformItem);
   } else {
@@ -202,7 +216,6 @@ const transformItem = (item: UserAPI.RouterResData) => {
       enName: grandChildItem.enName.toUpperCase()
     }));
   }
-
   return baseItem;
 }
 

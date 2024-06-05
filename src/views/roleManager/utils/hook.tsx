@@ -143,7 +143,7 @@ export function useRoleHook() {
     addDialog({
       title: t('功能权限设置'),
       width: '40%',
-      draggable: true,
+      alignCenter: true,
       hideFooter: true,
       closeOnClickModal: false,
       contentRenderer: ({ options, index }) => {

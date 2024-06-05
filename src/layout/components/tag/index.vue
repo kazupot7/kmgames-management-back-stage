@@ -536,7 +536,7 @@ onBeforeUnmount(() => {
             :to="item.path"
             class="dark:!text-text_color_primary dark:hover:!text-primary"
           >
-            {{ t(item.meta.title) }}
+            {{ item.meta.title }}
           </router-link>
           <span
             v-if="

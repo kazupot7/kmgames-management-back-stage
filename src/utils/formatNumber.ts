@@ -6,6 +6,12 @@ export const formatNumber = (val: string, len?: number) => {
   return val.replace(/\D/g, '').replace(/^0{1,}/g, '').slice(0, len ?? MAX_INPUT_NUMBER_LENGTH)
 }
 
+//- 格式数字为百分比
+export const formtPercentage = (n: number) => {
+  const percentage = (n * 100).toFixed(0) + '%';
+  return percentage;
+}
+
 //- 过滤中文跟空格
 export const formatChinese = (val: string, len?: number) => {
   if (val === '0') return val;

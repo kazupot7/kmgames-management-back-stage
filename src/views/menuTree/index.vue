@@ -38,7 +38,7 @@
                   <template v-slot:node-label>
                     <div class="flex items-center">
                       <span class="text-sm font-bold">
-                        {{ t(node.data.meta.title) }}
+                        {{ node.data.meta.title }}
                       </span>
                       <span class="ml-1 text-red-400 text-xs">
                         {{ node.data.path }}</span

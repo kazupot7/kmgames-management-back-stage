@@ -5,10 +5,10 @@
     :model="form"
     class="search-form bg-bg_color w-[99/100] pl-8 pt-[12px]"
   >
-    <el-form-item :label="`${t('账号名称')}:`" prop="name">
+    <el-form-item :label="`${t('商户名称')}:`" prop="name">
       <el-input
         v-model="form.name"
-        :placeholder="t('请输入账号')"
+        :placeholder="t('请输入商户名称')"
         clearable
         maxlength="30"
         v-enter="search"
@@ -16,10 +16,10 @@
       />
     </el-form-item>
 
-    <el-form-item :label="`${t('创建人')}:`" prop="createdBy">
+    <el-form-item :label="`${t('商户编号/ID')}:`" prop="createdBy">
       <el-input
         v-model="form.createdBy"
-        :placeholder="t('请输入创建人')"
+        :placeholder="t('请输入商户编号或ID')"
         clearable
         maxlength="20"
         v-enter="search"
@@ -27,12 +27,23 @@
       />
     </el-form-item>
 
-    <el-form-item :label="`${t('状态')}:`" prop="staus">
+    <el-form-item :label="`${t('商户类型')}:`" prop="staus">
       <el-select v-model="form.staus" clearable class="!w-[150px]">
         <el-option :label="t('全部')" :value="' '" />
         <el-option :label="t('禁用')" :value="1" />
         <el-option :label="t('启用')" :value="0" />
       </el-select>
+    </el-form-item>
+
+    <el-form-item :label="`${t('商户对接人')}:`" prop="createdBy">
+      <el-input
+        v-model="form.createdBy"
+        :placeholder="t('请输入商户对接人')"
+        clearable
+        maxlength="20"
+        v-enter="search"
+        class="!w-[200px]"
+      />
     </el-form-item>
 
     <el-form-item prop="createTimeStart" :label="`${t('创建时间')}:`">
@@ -78,8 +89,6 @@ const props = defineProps<{
 const selectDate = ref('');
 const formRef = ref();
 const emits = defineEmits(['onSearch']);
-
-
 
 const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields();

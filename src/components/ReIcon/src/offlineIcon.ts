@@ -35,8 +35,8 @@ import billboardManager from "@iconify-icons/ri/store-2-fill";
 import roleManager from '@iconify-icons/ri/money-cny-circle-line';
 import role from "@iconify-icons/ep/monitor";
 import virtual from "@iconify-icons/ep/files";
-import menuTree from '@iconify-icons/ri/list-unordered';
-import configCenter from '@iconify-icons/ri/settings-3-line';
+import systemConfig from '@iconify-icons/ri/list-unordered';
+import whiteManager from '@iconify-icons/ri/settings-3-line';
 
 addIcon("billboardManager", billboardManager);
 addIcon("userManager", userManager);
@@ -45,10 +45,12 @@ addIcon("roleManager", virtual);
 addIcon("virtual", roleManager);
 addIcon("history", History);
 addIcon("operationLog", OperationLog);
-addIcon("menuTree", menuTree);
-addIcon("configCenter", configCenter);
+addIcon("systemConfig", systemConfig);
+// addIcon("whiteManager", whiteManager);
+addIcon("sysSwitch", whiteManager);
 /* 菜单icon结束 */
 
+addIcon("configCenter", whiteManager);
 addIcon("homeFilled", HomeFilled);
 addIcon("informationLine", InformationLine);
 addIcon("lollipop", Lollipop);

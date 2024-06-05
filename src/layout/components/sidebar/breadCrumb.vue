@@ -7,7 +7,7 @@
         :key="item.path"
       >
         <a @click.prevent="handleLink(item)">
-          {{ t(item.meta.title) }}
+          {{ item.meta.title }}
         </a>
       </el-breadcrumb-item>
     </transition-group>
@@ -20,7 +20,6 @@ import { ref, watch, onMounted, toRaw } from 'vue';
 import { getParentPaths, findRouteByPath } from '@/router/utils';
 import { useMultiTagsStoreHook } from '@/store/multiTags';
 import { useRoute, useRouter, RouteLocationMatched } from 'vue-router';
-import { t } from '@/plugins/i18n';
 
 const route = useRoute();
 const levelList = ref([]);
