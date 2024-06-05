@@ -10,6 +10,7 @@ import { operationLogData } from "./operationLog";
 import { esportsSettlement } from "./esportsSettlement";
 import { billboardManagerData } from "./billboardManager";
 import { SysTemConfigData } from "./systemConfig";
+import { clientManagerData } from "./clientManager";
 
 export const API = {
   ...user,
@@ -24,4 +25,5 @@ export const API = {
   ...esportsSettlement,
   ...billboardManagerData,
   ...SysTemConfigData,
+  ...clientManagerData,
 }; 3
