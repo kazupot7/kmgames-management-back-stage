@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <el-form
     class="relative pl-3 pr-3 member_form"
     ref="ruleFormRef"
@@ -95,4 +95,12 @@ defineExpose({ getRef });
     margin-bottom: 0 !important;
   }
 }
-</style>
+</style> -->
+
+<template>
+  <div>123</div>
+</template>
+
+<script setup lang="ts"></script>
+
+<style scoped></style>
