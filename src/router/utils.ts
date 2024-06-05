@@ -28,6 +28,7 @@ const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
 
 // 动态路由
 import { permissionData } from "./permissionRouter";
+import { useUserStore } from "@/store/user";
 
 function handRank(routeInfo: any) {
   const { name, path, parentId, meta } = routeInfo;
@@ -83,11 +84,10 @@ function isOneOfArray(a: Array<string>, b: Array<string>) {
 
 /** 从sessionStorage里取出当前登陆用户的角色roles，过滤无权限的菜单 */
 function filterNoPermissionTree(data: RouteComponent[]) {
-  3
-  const currentRoles =
-    storageSession().getItem<DataInfo<{ id: number; name: string; resources: null }>>(sessionKey)?.roles.map(item => item.name) ?? [];
+  // const currentRoles =
+  //   storageSession().getItem<DataInfo<{ id: number; name: string; resources: null }>>(sessionKey)?.roles.map(item => item.name) ?? [];
   const newTree = cloneDeep(data).filter((v: any) =>
-    isOneOfArray(v.meta?.roles, currentRoles)
+    isOneOfArray(v.meta?.roles, [])
   );
   newTree.forEach(
     (v: any) => v.children && (v.children = filterNoPermissionTree(v.children))
@@ -180,7 +180,7 @@ function handleAsyncRoutes(routeList) {
 }
 
 //- 清洗后端返回数据
-const transformItem = (item: UserAPI.RouterData) => {
+const transformItem = (item: UserAPI.RouterResData) => {
   const baseItem: UserAPI.RouterData = {
     path: item.path,
     name: item.path.slice(1).split('/').join('_').toUpperCase(),
@@ -218,8 +218,11 @@ function initRouter() {
       });
     } else {
       return new Promise(resolve => {
-        API.getRouter().then(({ data }) => {
-          data = data.map(transformItem);
+        const userStore = useUserStore();
+        API.getRouter({
+          id: userStore.userInfo.id
+        }).then(({ data }: { data: UserAPI.RouterResData[] }) => {
+          data = data.map(transformItem) as any;
           handleAsyncRoutes(cloneDeep(data));
           storageSession().setItem(key, data);
           resolve(router);

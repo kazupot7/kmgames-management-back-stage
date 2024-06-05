@@ -71,7 +71,6 @@ import setting from './components/setting/index.vue';
 import Vertical from './components/sidebar/vertical.vue';
 import Horizontal from './components/sidebar/horizontal.vue';
 import backTop from '@/assets/svg/back_top.svg?component';
-import { useMatchStore } from '@/store/match';
 
 const appWrapperRef = ref();
 const { isDark } = useDark();
@@ -79,7 +78,6 @@ const { layout } = useLayout();
 const isMobile = deviceDetection();
 const pureSetting = useSettingStoreHook();
 const { $storage } = useGlobal<GlobalPropertiesApi>();
-const matchStore = useMatchStore();
 
 routerTranslate();
 const set: setType = reactive({
@@ -159,7 +157,6 @@ onMounted(() => {
   if (isMobile) {
     toggle('mobile', false);
   }
-  matchStore.set_countryList();
 });
 
 onBeforeMount(() => {

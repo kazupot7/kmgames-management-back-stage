@@ -42,27 +42,69 @@
 <script setup lang="ts">
 import ElTreeLine from '@/components/ReTreeLine';
 import { t } from '@/plugins/i18n';
-import { list } from '../utils/test';
+import { message } from '@/utils/message';
 
-const treeRef = ref();
 defineOptions({ name: 'menuTree' });
+const treeRef = ref();
 const selectAll = ref(false);
 const emits = defineEmits(['closeDialog']);
+const defaultKeyList = reactive<number[]>([]);
 
 const dataProps = {
   value: 'id',
   children: 'childResourceList'
 };
+const menusData = reactive<RoleAPI.ChildResourceList[]>([]);
+
+const props = defineProps<{
+  roleId: number;
+}>();
+
+onMounted(() => {
+  initTreeList();
+});
+
 const closeDialog = () => emits('closeDialog');
-const menusData = reactive(list);
+const initTreeList = async () => {
+  const res = await API.allPermissionList({
+    roleId: props.roleId
+  });
+  if (res.code) return message(res.msg, { type: 'error' });
+  menusData.length = 0;
+  menusData.push(...res.data);
+  defaultKeyList.length = 0;
+  checkIsInitSelected(menusData);
+  nextTick(() => {
+    treeRef.value!.setCheckedKeys(defaultKeyList);
+  });
+};
+//- 判断是否初始化被选中
+const checkIsInitSelected = (list: RoleAPI.ChildResourceList[]) => {
+  list.forEach(item => {
+    if (item.childResourceList.length) {
+      checkIsInitSelected(item.childResourceList);
+    }
+    if (!!item.resourceFlag) defaultKeyList.push(item.id);
+  });
+};
 
 //- 保存选中内容
-const saveRole = () => {
-  console.log(treeRef.value!.getCheckedNodes(false, false));
+const saveRole = async () => {
+  const resourceList = treeRef
+    .value!.getCheckedNodes(false, false)
+    .map(item => item.id);
+
+  const res = await API.updateRoleResource({
+    roleId: props.roleId,
+    resourceList
+  });
+  message(res.msg, { type: res.code ? 'error' : 'success' });
+  if (!res.code) {
+    closeDialog();
+  }
 };
 
 //- 获取所有的子节点
-
 const getAllNodeKeys = node => {
   let keys = [node.id];
   if (node.childResourceList && node.childResourceList.length > 0) {

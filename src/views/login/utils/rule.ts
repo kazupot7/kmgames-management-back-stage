@@ -17,9 +17,9 @@ const loginRules = reactive(<FormRules>{
       validator: (_, value, callback) => {
         if (value === "") {
           callback(new Error(t("请输入用户名")));
-        } else if (!REGEXP_EMAIL.test(value)) {
+        } /* else if (!REGEXP_EMAIL.test(value)) {
           callback(new Error(t("请输入电子邮件格式的用户名")));
-        } else {
+        } */ else {
           callback();
         }
       },

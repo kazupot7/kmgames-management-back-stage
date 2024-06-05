@@ -1,23 +1,29 @@
 <template>
   <el-form
-    class="relative pl-3 pr-3 member_form"
     ref="ruleFormRef"
     :model="newFormInline"
     :rules="formRules"
-    label-width="auto"
+    class="pr-10"
+    label-width="100px"
   >
-    <el-form-item :label="`${t('角色名称')}:`" prop="input" required>
+    <el-form-item :label="`${t('角色名称')}:`" prop="roleName">
       <el-input
-        v-model="newFormInline.input"
-        :placeholder="t('请输入角色名称')"
+        v-model="newFormInline.roleName"
+        clearable
+        :placeholder="t('请输入2-30个英文字母或数字')"
       />
     </el-form-item>
 
-    <el-form-item :label="t('备注')">
-      <el-input type="textarea" v-model="newFormInline.input" />
+    <el-form-item :label="t('备注')" prop="comment">
+      <el-input
+        type="textarea"
+        v-model="newFormInline.comment"
+        maxLength="255"
+        :placeholder="t('只能输入255个字符的内容')"
+      />
     </el-form-item>
 
-    <el-form-item :label="`${t('角色状态')}:`" prop="status" required>
+    <el-form-item :label="t('角色状态')" prop="status" v-if="!row.roleId">
       <el-switch
         v-model="newFormInline.status"
         inline-prompt
@@ -28,109 +34,56 @@
         :style="switchStyle"
       />
     </el-form-item>
+
+    <div class="flex justify-end">
+      <el-button @click="closeDialog">{{ t('取消') }}</el-button>
+      <el-button type="primary" @click="confirmClick">{{
+        t('确定')
+      }}</el-button>
+    </div>
   </el-form>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
 import { ref } from 'vue';
 import { formRules } from './utils/rule';
-import { FormProps } from './utils/types';
-import GoogleDialog from './component/GoogleDialog.vue';
-// import type { UploadProps } from 'element-plus';
-// import { Plus } from '@element-plus/icons-vue';
 import { t } from '@/plugins/i18n';
-// import { SPORT_ID_MAP } from '@/utils/maps/sports_map';
-// import { useMatchStore } from '@/store/match';
-// import { inputRestrictions } from '@/utils/formatNumber';
 import { usePublicHooks } from '@/hooks';
-import { addDialog } from '@/components/ReDialog';
-// import CustomInput from '@/components/Form/CustomInput.vue';
+import { FormInstance } from 'element-plus/es/components/form';
+import { message } from '@/utils/message';
+import { removeEmptyStringKeys } from '@/utils/utilFn';
 
-// const matchStore = useMatchStore();
 const { switchStyle } = usePublicHooks();
-const props = withDefaults(defineProps<FormProps>(), {
-  formInline: () => ({
-    status: false,
-    input: '',
-    type: ''
-  })
-});
 
-const emits = defineEmits(['reloadTable']);
+const props = defineProps<{
+  row: RoleAPI.addSysAccountRes;
+}>();
 
-const ruleFormRef = ref();
-const newFormInline = ref(props.formInline);
+const emits = defineEmits(['closeDialog']);
 
 const testChange = () => {};
 
-//- 绑定谷歌验证器
-const openResetGoogle = () => {
-  addDialog({
-    width: '35%',
-    draggable: false,
-    class: 'google_dialog',
-    showClose: false,
-    closeOnClickModal: false,
-    props: {
-      formData: {
-        code: ''
-      }
-    },
-    contentRenderer: () => h(GoogleDialog),
-    beforeSure: (_done, { options }) => {
-      console.log('form.vue文件 315==============行打印=', options);
-      // const FormRef = googleRef.value.getRef();
-      // const curData = options.props.code;
-      // FormRef.validate(async valid => {});
+const ruleFormRef = ref<FormInstance>();
+const newFormInline = reactive(props.row);
+
+const closeDialog = () => {
+  emits('closeDialog');
+};
+
+/* 传,roleName,status,comment */
+const confirmClick = () => {
+  ruleFormRef.value.validate(async v => {
+    const requestAPI = newFormInline.roleId ? 'updateRole' : 'addRole';
+    if (v) {
+      const res = await API[requestAPI]({
+        ...(removeEmptyStringKeys(newFormInline) as RoleAPI.addSysAccountRes),
+        status: Number(newFormInline.status)
+      });
+      message(res.msg, { type: res.code ? 'error' : 'success' });
+      emits('closeDialog', res.code ? '' : 'reloadTable');
     }
   });
 };
-
-function getRef() {
-  return ruleFormRef.value;
-}
-defineExpose({ getRef });
 </script>
 
-<style lang="scss">
-.status {
-  position: absolute;
-  top: -45px;
-  left: 100px;
-  display: flex !important;
-  align-items: center;
-  label {
-    margin-bottom: 0 !important;
-  }
-}
-.password {
-  display: flex !important;
-  align-items: center;
-  label {
-    margin-bottom: 0 !important;
-    min-width: 40px;
-    text-align: left !important;
-  }
-}
-.key_container {
-  .el-form-item__content {
-    flex-wrap: nowrap;
-    button {
-      margin-left: 10px;
-    }
-  }
-}
-
-.member_form {
-  label {
-    font-size: 12px;
-    margin-bottom: 0 !important;
-  }
-}
-
-.google_dialog {
-  .el-dialog__header {
-    display: none !important;
-  }
-}
-</style>
+<style lang="scss"></style>

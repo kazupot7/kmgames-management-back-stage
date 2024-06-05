@@ -6,32 +6,32 @@
       :model="form"
       class="search-form bg-bg_color w-[99/100] pl-8 pt-[12px]"
     >
-      <el-form-item :label="`${t('角色名称')}:`" prop="leagueId">
+      <el-form-item :label="`${t('角色名称')}:`" prop="name">
         <el-input
-          v-model="form.leagueNameCn"
+          v-model="form.name"
           :placeholder="t('请输入角色名称')"
           clearable
-          :formatter="v => formatNumber(v)"
+          maxlength="20"
           v-enter="search"
           class="!w-[150px]"
         />
       </el-form-item>
 
-      <el-form-item :label="`${t('状态')}:`" prop="sportId">
-        <el-select class="!w-[150px]">
-          <el-option value="-1" :label="t('全部状态')"></el-option>
-          <el-option value="1" :label="t('启用')"></el-option>
-          <el-option value="2" :label="t('禁用')"></el-option>
+      <el-form-item :label="`${t('状态')}:`" prop="status">
+        <el-select class="!w-[150px]" v-model="form.status">
+          <el-option :value="' '" :label="t('全部状态')"></el-option>
+          <el-option :value="0" :label="t('启用')"></el-option>
+          <el-option :value="1" :label="t('禁用')"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item :label="`${t('创建人')}:`" prop="leagueId">
+      <el-form-item :label="`${t('创建人')}:`" prop="createdBy">
         <el-input
-          v-model="form.leagueNameCn"
+          v-model="form.createdBy"
           :placeholder="t('请输入创建人')"
           clearable
-          :formatter="v => formatNumber(v)"
           v-enter="search"
+          maxlength="20"
           class="!w-[150px]"
         />
       </el-form-item>
@@ -66,26 +66,26 @@
 
 <script setup lang="ts">
 import { t } from '@/plugins/i18n';
-// import { SPORT_ID_MAP } from '@/utils/maps/sports_map';
 import { useRenderIcon } from '@/components/ReIcon/src/hooks';
 import Refresh from '@iconify-icons/ep/refresh';
 import Search from '@iconify-icons/ep/search';
 import type { FormInstance } from 'element-plus';
 import { SearchFormType } from '../utils/types';
-import { formatNumber } from '@/utils/formatNumber';
-// import { useMatchStore } from '@/store/match';
+import dayjs from 'dayjs';
 
-defineProps<{
+const props = defineProps<{
   loading: boolean;
   form: SearchFormType;
 }>();
 
-// const matchStore = useMatchStore();
 const formRef = ref<FormInstance>();
 const selectDate = ref('');
 const emits = defineEmits(['onSearch']);
 const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
+  selectDate.value = '';
+  props.form.startCreatedAt = '';
+  props.form.endCreatedAt = '';
   search();
 };
 
@@ -93,7 +93,20 @@ const search = () => {
   emits('onSearch', ...['reload']);
 };
 
-const changeDate = () => {};
+const changeDate = t => {
+  if (!t) {
+    props.form.startCreatedAt = '';
+    props.form.endCreatedAt = '';
+  } else {
+    props.form.startCreatedAt = dayjs(t[0])
+      .startOf('day')
+      .format('YYYY-MM-DD HH:mm:ss');
+    props.form.endCreatedAt = dayjs(t[1])
+      .endOf('day')
+      .format('YYYY-MM-DD HH:mm:ss');
+  }
+  search();
+};
 </script>
 
 <style scoped></style>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Search from '../search/index.vue';
-import Notice from '../notice/index.vue';
 import SidebarItem from './sidebarItem.vue';
 import { isAllEmpty } from '@pureadmin/utils';
 import { ref, nextTick, computed } from 'vue';
@@ -11,6 +9,7 @@ import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line';
 import Setting from '@iconify-icons/ri/settings-3-line';
 import LanguageNav from '@/components/LanguageNav/index.vue';
 import { t } from '@/plugins/i18n';
+import { useResetPasswordHook } from '@/hooks/resetPasswordHook';
 
 const menuRef = ref();
 
@@ -20,6 +19,7 @@ const { title, logout, backTopMenu, onPanel, userAvatar } = useNav();
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
 );
+const { openResetDialog } = useResetPasswordHook();
 
 nextTick(() => {
   menuRef.value?.handleResize();
@@ -63,6 +63,10 @@ nextTick(() => {
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
+            <el-dropdown-item @click="openResetDialog">
+              <IconifyIconOffline icon="configCenter" style="margin: 5px" />
+              {{ t('重置密码') }}
+            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"

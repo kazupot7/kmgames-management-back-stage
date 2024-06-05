@@ -44,9 +44,9 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       port: VITE_PORT,
       host: "0.0.0.0",
       proxy: {
-        "/match": {
+        "/management": {
           target: VITE_API_BASE_URL,
-          rewrite: path => path.replace(/^\/match/, ""),
+          rewrite: path => path.replace(/^\/management/, ""),
           changeOrigin: true,
           configure: (proxy, _) => {
             proxy.on("proxyRes", (_, req, _r) => {

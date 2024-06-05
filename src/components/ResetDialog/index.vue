@@ -45,39 +45,62 @@
         />
       </el-form-item>
     </el-form>
+    <div class="flex items-center justify-center">
+      <el-button @click="closeDialog">{{ t('取消') }}</el-button>
+      <el-button :disabled="isDisabled" type="primary" @click="resetPassword">{{
+        t('确认')
+      }}</el-button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { t } from '@/plugins/i18n';
+import { useUserStore } from '@/store/user';
+import { getMD5 } from '@/utils/caypto';
+import { message } from '@/utils/message';
 import { resetPasswordRules } from '@/views/login/utils/rule';
 import { IResetForm } from '@/views/login/utils/type';
 import { FormInstance } from 'element-plus/es/components/form';
 
 const resetFormRef = ref<FormInstance>();
+const isDisabled = ref(true);
+const userStore = useUserStore();
+
 const resetForm = reactive<IResetForm>({
   oldPassword: '',
   newPassword: '',
   confirmPassword: ''
 });
-const emits = defineEmits(['changeDisabledStatus']);
+
+const emits = defineEmits(['changeDisabledStatus', 'closeDialog']);
 watch(
   () => resetForm,
-  _ => {
-    resetFormRef.value.validate(async v => {
-      emits('changeDisabledStatus', v);
-    });
+  async _ => {
+    const r: boolean = await new Promise(resolve =>
+      resetFormRef.value.validate(resolve)
+    );
+    isDisabled.value = !r;
   },
   {
     deep: true
   }
 );
 
-function getRef() {
-  return resetFormRef.value;
-}
+const resetPassword = async () => {
+  const res = await API.updatePwd({
+    id: userStore.userInfo.id,
+    pwd: getMD5(resetForm.oldPassword),
+    newPwd: getMD5(resetForm.newPassword)
+  });
+  if (res.code) return message(res.msg, { type: 'error' });
+  else message(t('修改成功，请重新登录'), { type: 'success' });
+  closeDialog();
+};
 
-defineExpose({ getRef });
+const closeDialog = () => {
+  emits('closeDialog');
+};
 </script>
 
 <style scoped></style>

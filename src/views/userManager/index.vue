@@ -2,20 +2,12 @@
   <div class="main">
     <SearchForm :form="form" :loading="loading" @on-search="onSearch" />
 
-    <PureTableBar
-      :title="t('联赛列表')"
-      :columns="columns"
-      @refresh="onSearch('reload')"
-    >
-      <!-- <template #buttons>
-        <el-button
-          type="primary"
-          :icon="useRenderIcon(AddFill)"
-          @click="openDialog(t('新增联赛'))"
-        >
-          {{ t('新增联赛') }}
+    <PureTableBar :columns="columns" @refresh="onSearch('reload')">
+      <template #title>
+        <el-button type="primary" @click="openDialog(t('新增账号'))">
+          {{ t('新增账号') }}
         </el-button>
-      </template> -->
+      </template>
       <template v-slot="{ size, dynamicColumns }">
         <pure-table
           align-whole="center"
@@ -37,44 +29,53 @@
           @page-size-change="handleTableWidthChange"
           @page-current-change="handleCurrentChange"
         >
-          <!-- <template #leagueLogo="{ row, index }">
-            <el-image
-              preview-teleported
-              loading="lazy"
-              :src="row.leagueLogo"
-              :preview-src-list="dataList.map(v => v.leagueLogo)"
-              :initial-index="index"
-              fit="cover"
-              class="!w-[80px] h-[30px]"
+          <template
+            #openStatus="{
+              row
+            }: {
+              row: UserMangerAPI.querySysAccountListData
+            }"
+          >
+            <el-switch
+              v-model="row.status"
+              :size="size"
+              inline-prompt
+              class="pure-datatheme"
+              :active-text="t('开启')"
+              :inactive-text="t('关闭')"
+              :before-change="() => updateUserStatus(row)"
+              :style="switchStyle"
             />
-          </template> -->
+          </template>
+          <template #resetPassword="{ row }">
+            <el-button
+              class="reset-margin"
+              type="primary"
+              size="small"
+              @click="resetPasswordClick(row)"
+            >
+              {{ t('重置') }}
+            </el-button>
+          </template>
           <template #operation="{ row }">
             <el-button
               class="reset-margin"
               link
               type="primary"
               :size="size"
-              :icon="useRenderIcon(EditPen)"
-              @click="openDialog(t('编辑联赛'), row)"
+              @click="openDialog(t('编辑账号'), row)"
             >
               {{ t('编辑') }}
             </el-button>
-            <!-- <el-popconfirm
-              :title="`是否确认删除${row.name}的这条数据`"
-              @confirm="handleDelete(row)"
+            <el-button
+              @click="handleDelete(row)"
+              class="reset-margin"
+              link
+              type="danger"
+              :size="size"
             >
-              <template #reference>
-                <el-button
-                  class="reset-margin"
-                  link
-                  type="danger"
-                  :size="size"
-                  :icon="useRenderIcon(Delete)"
-                >
-                  {{ t('删除') }}
-                </el-button>
-              </template>
-            </el-popconfirm> -->
+              {{ t('删除') }}
+            </el-button>
           </template>
         </pure-table>
       </template>
@@ -85,13 +86,14 @@
 <script setup lang="ts">
 import { PureTableBar } from '@/components/RePureTableBar';
 // import Delete from '@iconify-icons/ep/delete';
-import EditPen from '@iconify-icons/ep/edit-pen';
 // import AddFill from '@iconify-icons/ri/add-circle-line';
-import { useLeague } from './utils/hook';
-import { useRenderIcon } from '@/components/ReIcon/src/hooks';
+import { useUserManager } from './utils/hook';
 import SearchForm from './component/SearchForm.vue';
 import { columns } from './component/TableColumnList';
 import { t } from '@/plugins/i18n';
+import { usePublicHooks } from '@/hooks';
+
+const { switchStyle } = usePublicHooks();
 
 defineOptions({ name: 'USERMANAGER' });
 
@@ -104,6 +106,9 @@ const {
   handleTableWidthChange,
   handleCurrentChange,
   handleSelectionChange,
-  form
-} = useLeague();
+  form,
+  handleDelete,
+  resetPasswordClick,
+  updateUserStatus
+} = useUserManager();
 </script>

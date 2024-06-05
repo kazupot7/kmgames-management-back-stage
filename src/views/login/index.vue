@@ -30,6 +30,7 @@
               <el-input
                 clearable
                 v-model="ruleForm.username"
+                maxlength="30"
                 :placeholder="t('输入您的用户名')"
                 :prefix-icon="useRenderIcon(User)"
               />
@@ -82,6 +83,7 @@ import LanguageNav from '@/components/LanguageNav/index.vue';
 import { useUserStore } from '@/store/user';
 import { t } from '@/plugins/i18n';
 import { useResetPasswordHook } from '@/hooks/resetPasswordHook';
+import { getMD5 } from '@/utils/caypto';
 
 defineOptions({ name: 'Login' });
 const router = useRouter();
@@ -94,8 +96,8 @@ dataThemeChange();
 const { title } = useNav();
 const userStore = useUserStore();
 const ruleForm = reactive({
-  username: 'admin@gmail.com',
-  password: '111111'
+  username: '',
+  password: ''
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -115,21 +117,21 @@ const _loginRequest = async () => {
   usePermissionStoreHook().handleWholeMenus([]);
   addPathMatch();
   try {
-    const res: UserAPI.Login = await API.login({
-      email: ruleForm.username,
-      password: ruleForm.password
+    const res = await API.login({
+      name: ruleForm.username,
+      pwd: getMD5(ruleForm.password)
     });
     loading.value = false;
     if (res.code) return message(res.msg, { type: 'error' });
-    //- 第一次登录强制弹出充值密码弹窗
-    if (ruleForm.password === '111111') {
-      // openResetDialog();
-    } else {
-    }
+    else message(t('登录成功'), { type: 'success' });
     userStore.setUserInfo(res.data);
+    //- 第一次登录强制弹出充值密码弹窗
+    if (ruleForm.password === '123456') {
+      return openResetDialog();
+      ruleForm.password = '';
+    }
     initRouter().then(() => {
       router.push(getTopMenu(true).path);
-      message(t('登录成功'), { type: 'success' });
     });
   } catch (error) {
     message(error.message, { type: 'error' });

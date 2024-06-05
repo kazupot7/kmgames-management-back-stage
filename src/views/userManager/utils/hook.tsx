@@ -1,31 +1,30 @@
 import editForm from '../form.vue';
 import { message } from '@/utils/message';
-import { FormItemProps } from 'element-plus';
-import { addDialog } from '@/components/ReDialog';
+import { ElMessageBox } from 'element-plus';
+import { addDialog, closeDialog } from '@/components/ReDialog';
 import type { PaginationProps } from '@pureadmin/table';
 import { reactive, ref, onMounted, h } from 'vue';
 import { removeEmptyStringKeys } from '@/utils/utilFn';
 import { searchFormType } from './types';
+import { getMD5 } from '@/utils/caypto';
 
-export function useLeague() {
-  const formRef = ref();
-  const dataList = reactive<MetadataAPI.LeagueList[]>([]);
+export function useUserManager() {
+  const dataList = reactive<UserMangerAPI.querySysAccountListData[]>([]);
   const loading = ref(true);
+
   const pagination = reactive<PaginationProps>({
     total: 0,
     pageSize: 10,
     currentPage: 1,
     background: true
   });
+
   const form = reactive<searchFormType>({
-    leagueNameCn: '',
-    leagueNameEn: '',
-    level: '',
-    countryId: '',
-    leagueId: '',
-    leagueId188Bet: '',
-    sportId: '',
-    category: 0
+    name: '',
+    createdBy: '',
+    staus: ' ',
+    startCreatedAt: '',
+    endCreatedAt: ''
   });
 
   function handleTableWidthChange(val: number) {
@@ -42,22 +41,22 @@ export function useLeague() {
     console.log('handleSelectionChange', val);
   }
 
+  //- 初始化
   async function onSearch(type?: string) {
     if (type === 'reload') pagination.currentPage = 1;
     try {
       loading.value = true;
-      const res: MetadataAPI.LeagueListRes = await API.getLeagueList({
+      const res = await API.getUserList({
         ...removeEmptyStringKeys(form),
         pageSize: pagination.pageSize,
         pageNum: pagination.currentPage
       });
       loading.value = false;
       if (res.code) return message(res.msg, { type: 'error' });
+      res.data.list.forEach(item => (item.status = !!item.status));
       dataList.length = 0;
       dataList.push(...res.data.list);
       pagination.total = res.data.total;
-      pagination.pageSize = res.data.pageSize;
-      pagination.currentPage = res.data.pageNum;
     } catch (error) {
       loading.value = false;
     }
@@ -69,52 +68,112 @@ export function useLeague() {
     onSearch();
   };
 
-  function openDialog(title: string, row?: MetadataAPI.LeagueList) {
+  //- 新增/修改账号弹窗
+  function openDialog(
+    title: string,
+    row?: UserMangerAPI.querySysAccountListData
+  ) {
     addDialog({
       title,
-      props: {
-        formInline: {
-          leagueLogo: row?.leagueLogo ?? '',
-          leagueId: row?.leagueId ?? '',
-          countryId: row?.countryId ?? '',
-          leagueId188Bet: row?.leagueId188Bet ?? '',
-          leagueNameCn: row?.leagueNameCn ?? '',
-          leagueNameEn: row?.leagueNameEn ?? '',
-          level: row?.level ?? '',
-          sportId: row?.sportId ?? ''
-        }
-      },
-      width: '40%',
-      draggable: true,
-      fullscreenIcon: true,
+      width: '30%',
       closeOnClickModal: false,
-      contentRenderer: () =>
-        h(editForm, { ref: formRef, onReloadTable: () => onSearch() }),
-      beforeSure: (done, { options }) => {
-        const FormRef = formRef.value.getRef();
-        const curData = options.props.formInline as FormItemProps;
-        function chores() {
-          done(); // 关闭弹框
-          onSearch(); // 刷新表格数据
-        }
-        FormRef.validate(async valid => {
-          if (valid) {
-            if (row) {
-              updateLeague(curData, () => chores());
-            } else {
-              // 实际开发先调用编辑接口，再进行下面操作
-              // chores();
-            }
+      hideFooter: true,
+      contentRenderer: ({ options, index }) =>
+        h(editForm, {
+          row: {
+            name: row?.name ?? '',
+            dept: row?.dept ?? '',
+            roleId: row?.roleId ?? '',
+            comment: row?.comment ?? '',
+            status: row?.status ?? true,
+            avatar: row?.avatar ?? '',
+            isAdmmin: row?.isAdmin ?? 1,
+            pwd: row?.pwd ?? getMD5('123456'),
+            id: row?.id ?? ''
+          },
+          onCloseDialog: (closeType?: string) => {
+            if (closeType) onSearch('reload');
+            closeDialog(options, index);
           }
-        });
-      }
+        })
     });
   }
 
-  const updateLeague = async (curData, cb) => {
-    const res = await API.updateLeague(curData);
-    message(res.msg, { type: res.code ? 'error' : 'success' });
-    if (!res.code) cb();
+  //- 删除账号
+  const handleDelete = async (row: UserMangerAPI.querySysAccountListData) => {
+    ElMessageBox.confirm(
+      `<div class="text-center">
+       <p>${'确定要删除用户账号'}${row.name}</br></p>
+      <p>${t('账号删除后不可恢复')}</p>
+      </div>`,
+      t('警告'),
+      {
+        confirmButtonText: t('提交'),
+        cancelButtonText: t('取消'),
+        type: 'warning',
+        center: true,
+        dangerouslyUseHTMLString: true
+      }
+    ).then(async () => {
+      const res = await API.deleteSysAccount({ id: row.id });
+      message(res.msg, { type: res.code ? 'error' : 'success' });
+      if (!res.code) onSearch();
+    });
+  };
+
+  //- 重置密码
+  const resetPasswordClick = async (
+    row: UserMangerAPI.querySysAccountListData
+  ) => {
+    ElMessageBox.confirm(
+      `${'确定要重置'}${row.name}${t('的密码？')}</br>${t(
+        '重置后的密码为:123456'
+      )}`,
+      t('警告'),
+      {
+        confirmButtonText: t('提交'),
+        cancelButtonText: t('取消'),
+        type: 'warning',
+        center: true,
+        dangerouslyUseHTMLString: true
+      }
+    ).then(async () => {
+      const res = await API.updateUserPwd({
+        id: row.id,
+        newPwd: getMD5('123456')
+      });
+      message(res.msg, { type: res.code ? 'error' : 'success' });
+    });
+  };
+
+  //- 修改启用状态
+  const updateUserStatus = async (
+    row: UserMangerAPI.querySysAccountListData
+  ) => {
+    return new Promise<boolean>((resolve, reject) => {
+      ElMessageBox.confirm(
+        +row.status === 1 ? t('确定要开启用户么？') : t('确定关闭用户么?'),
+        t('警告'),
+        {
+          center: true,
+          type: 'warning'
+        }
+      )
+        .then(async () => {
+          const res = await API.updateStatusById({
+            status: +row.status === 0 ? 1 : 0,
+            id: row.id
+          });
+          if (res.code) {
+            reject();
+          } else {
+            resolve(true);
+            onSearch();
+          }
+          message(res.msg, { type: res.code ? 'error' : 'success' });
+        })
+        .catch(reject);
+    });
   };
 
   onMounted(() => {
@@ -130,9 +189,11 @@ export function useLeague() {
     resetForm,
     openDialog,
     form,
-    // handleDatabase,
+    handleDelete,
     handleTableWidthChange,
     handleCurrentChange,
-    handleSelectionChange
+    handleSelectionChange,
+    resetPasswordClick,
+    updateUserStatus
   };
 }

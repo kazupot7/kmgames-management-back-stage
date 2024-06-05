@@ -22,6 +22,17 @@ declare namespace UserAPI {
     data: Login_Data;
   }
 
+
+  type LoginData = {
+    token: string;
+    name: string;
+    id: number;
+    status: number;
+    isAdmin: number;
+  }
+
+  type LoginResType = COMMON.BASE_RES_TYPE<LoginData>
+
   type Meta = {
     title?: string;
     icon?: string;
@@ -52,5 +63,32 @@ declare namespace UserAPI {
   }
 
 
+  type ChildResourceList = {
+    id: number;
+    name: string;
+    enName: string;
+    routerPath: string;
+    parentId: number;
+    type: number;
+    sort: number;
+    resourceFlag: number;
+    path: string;
+    childResourceList: any[];
+  }
+
+  type RouterResData = {
+    id: number;
+    name: string;
+    enName: string;
+    routerPath: string;
+    parentId: number;
+    type: number;
+    sort: number;
+    resourceFlag: number;
+    path: string;
+    childResourceList: ChildResourceList[];
+  }
+
   type GetRouterTyperes = COMMON.BASE_RES_TYPE<RouterData[]>
+  type RouterResType = COMMON.BASE_RES_TYPE<RouterResData[]>
 }

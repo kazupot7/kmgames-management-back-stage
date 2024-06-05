@@ -6,12 +6,11 @@ import { router, resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
 import { useMultiTagsStoreHook } from "@/store/multiTags";
 import { type DataInfo, removeStorage, sessionKey, TokenKey } from "@/utils/auth";
-import { message } from "@/utils/message";
 
 export const useUserStore = defineStore('USERSTATE', {
   state: (): userType => ({
     roles: storageSession().getItem<DataInfo<{ id: number; name: string; resources: null }>>(sessionKey)?.roles.map(_ => _.name) ?? [],
-    userInfo: {} as UserAPI.Login_User,
+    userInfo: {} as UserAPI.LoginData,
     token: '',
   }),
   actions: {
@@ -28,21 +27,12 @@ export const useUserStore = defineStore('USERSTATE', {
       this.userInfo = {};
       router.push("/login");
     },
-    setUserInfo(_: UserAPI.Login_Data) {
-      this.userInfo = Object.assign(this.userInfo, _.user)
+    setUserInfo(_: UserAPI.LoginData) {
+      this.userInfo = Object.assign(this.userInfo, _)
       this.token = _.token;
       storageSession().setItem(sessionKey, this.userInfo);
       storageSession().setItem(TokenKey, this.token);
     },
-    async s_check_user() {
-      try {
-        const res = await API.me()
-        this.userInfo = Object.assign(this.userInfo, res);
-      } catch (error) {
-        message(error.message, { type: 'error' });
-        console.log('user.ts文件 73==============行打印=', error)
-      }
-    }
   },
   persist: {
     enabled: true,
