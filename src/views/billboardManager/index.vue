@@ -26,23 +26,36 @@
           @page-size-change="handleTableWidthChange"
           @page-current-change="handleCurrentChange"
         >
-          <template #resetPassword="{ row }">
-            <el-button
-              class="reset-margin"
-              type="primary"
-              size="small"
-              @click="resetPasswordClick(row)"
-            >
-              {{ t('重置') }}
-            </el-button>
+          <template
+            #status="{ row }: { row: BillboardManagerAPI.BillboardList }"
+          >
+            <el-switch
+              v-model="row.status"
+              :size="size"
+              inline-prompt
+              class="pure-datatheme"
+              :active-text="t('开启')"
+              :inactive-text="t('关闭')"
+              :before-change="() => updateUserStatus(row)"
+              :style="switchStyle"
+            />
           </template>
           <template #operation="{ row }">
             <el-button
               class="reset-margin"
               link
+              type="info"
+              :size="size"
+              @click="showDetailDialog(row)"
+            >
+              {{ t('查看') }}
+            </el-button>
+            <el-button
+              class="reset-margin"
+              link
               type="primary"
               :size="size"
-              @click="openDialog(t('编辑账号'), row)"
+              @click="openDialog(t('修改公共'), row)"
             >
               {{ t('编辑') }}
             </el-button>
@@ -64,8 +77,6 @@
 
 <script setup lang="ts">
 import { PureTableBar } from '@/components/RePureTableBar';
-// import Delete from '@iconify-icons/ep/delete';
-// import AddFill from '@iconify-icons/ri/add-circle-line';
 import { useBillboardManager } from './utils/hook';
 import SearchForm from './component/SearchForm.vue';
 import { columns } from './component/TableColumnList';
@@ -74,7 +85,8 @@ import { usePublicHooks } from '@/hooks';
 
 const { tableHeaderStyle } = usePublicHooks();
 
-defineOptions({ name: 'USERMANAGER' });
+defineOptions({ name: 'BILLBOARDMANAGER' });
+const { switchStyle } = usePublicHooks();
 
 const {
   loading,
@@ -87,6 +99,7 @@ const {
   handleSelectionChange,
   form,
   handleDelete,
-  resetPasswordClick
+  updateUserStatus,
+  showDetailDialog
 } = useBillboardManager();
 </script>

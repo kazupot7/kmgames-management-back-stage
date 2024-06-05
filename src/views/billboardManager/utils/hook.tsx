@@ -6,10 +6,10 @@ import type { PaginationProps } from '@pureadmin/table';
 import { reactive, ref, onMounted, h } from 'vue';
 import { removeEmptyStringKeys } from '@/utils/utilFn';
 import { searchFormType } from './types';
-import { getMD5 } from '@/utils/caypto';
+import ConfirmDialog from '../component/ConfirmDialog.vue';
 
 export function useBillboardManager() {
-  const dataList = reactive<UserMangerAPI.querySysAccountListData[]>([]);
+  const dataList = reactive<BillboardManagerAPI.BillboardList[]>([]);
   const loading = ref(true);
 
   const pagination = reactive<PaginationProps>({
@@ -20,9 +20,10 @@ export function useBillboardManager() {
   });
 
   const form = reactive<searchFormType>({
-    name: '',
-    createdBy: '',
-    staus: ' ',
+    billboardTitleCn: '',
+    billboardTitleEn: '',
+    billboardTypeCn: '',
+    billboardTypeEn: '',
     startCreatedAt: '',
     endCreatedAt: ''
   });
@@ -46,7 +47,7 @@ export function useBillboardManager() {
     if (type === 'reload') pagination.currentPage = 1;
     try {
       loading.value = true;
-      const res = await API.getUserList({
+      const res = await API.getBillboardList({
         ...removeEmptyStringKeys(form),
         pageSize: pagination.pageSize,
         pageNum: pagination.currentPage
@@ -69,10 +70,7 @@ export function useBillboardManager() {
   };
 
   //- 新增/修改账号弹窗
-  function openDialog(
-    title: string,
-    row?: UserMangerAPI.querySysAccountListData
-  ) {
+  function openDialog(title: string, row?: BillboardManagerAPI.BillboardList) {
     addDialog({
       title,
       width: '30%',
@@ -80,15 +78,13 @@ export function useBillboardManager() {
       hideFooter: true,
       contentRenderer: ({ options, index }) =>
         h(editForm, {
-          row: {
-            name: row?.name ?? '',
-            dept: row?.dept ?? '',
-            roleId: row?.roleId ?? '',
-            comment: row?.comment ?? '',
-            status: row?.status ?? true,
-            avatar: row?.avatar ?? '',
-            isAdmmin: row?.isAdmin ?? 1,
-            pwd: row?.pwd ?? getMD5('123456'),
+          renderData: {
+            billboardTitleEn: row?.billboardTitleEn ?? '',
+            billboardTitleCn: row?.billboardTitleCn ?? '',
+            billboardTypeCn: row?.billboardTypeCn ?? '',
+            billboardTypeEn: row?.billboardTypeEn ?? '',
+            billboardContentCn: row?.billboardContentCn ?? '',
+            billboardContentEn: row?.billboardContentEn ?? '',
             id: row?.id ?? ''
           },
           onCloseDialog: (closeType?: string) => {
@@ -99,8 +95,10 @@ export function useBillboardManager() {
     });
   }
 
-  //- 删除账号
-  const handleDelete = async (row: UserMangerAPI.querySysAccountListData) => {
+  //- 删除公告
+  const handleDelete = async (
+    row: BillboardManagerAPI.querySysAccountListData
+  ) => {
     ElMessageBox.confirm(
       `<div class="text-center">
        <p>${t('确定要删除公告')}</p>
@@ -116,44 +114,35 @@ export function useBillboardManager() {
         dangerouslyUseHTMLString: true
       }
     ).then(async () => {
-      const res = await API.deleteSysAccount({ id: row.id });
+      const res = await API.deleteBillboard({ id: row.id });
       message(res.msg, { type: res.code ? 'error' : 'success' });
       if (!res.code) onSearch();
     });
   };
 
-  //- 重置密码
-  const resetPasswordClick = async (
-    row: UserMangerAPI.querySysAccountListData
-  ) => {
-    ElMessageBox.confirm(
-      `${'确定要重置'}${row.name}${t('的密码？')}</br>${t(
-        '重置后的密码为:123456'
-      )}`,
-      t('警告'),
-      {
-        confirmButtonText: t('提交'),
-        cancelButtonText: t('取消'),
-        type: 'warning',
-        center: true,
-        dangerouslyUseHTMLString: true
-      }
-    ).then(async () => {
-      const res = await API.updateUserPwd({
-        id: row.id,
-        newPwd: getMD5('123456')
-      });
-      message(res.msg, { type: res.code ? 'error' : 'success' });
+  //- 点击查看详情弹窗
+  const showDetailDialog = row => {
+    addDialog({
+      title: t('发送确认'),
+      width: '40%',
+      closeOnClickModal: false,
+      hideFooter: true,
+      contentRenderer: ({ options, index }) =>
+        h(ConfirmDialog, {
+          inputData: row,
+          isOnlyShow: true,
+          onCloseDialog: () => {
+            closeDialog(options, index);
+          }
+        })
     });
   };
 
-  //- 修改启用状态
-  const updateUserStatus = async (
-    row: UserMangerAPI.querySysAccountListData
-  ) => {
+  //- 修改发送状态
+  const updateUserStatus = async (row: BillboardManagerAPI.BillboardList) => {
     return new Promise<boolean>((resolve, reject) => {
       ElMessageBox.confirm(
-        +row.status === 1 ? t('确定要开启用户么？') : t('确定关闭用户么?'),
+        +row.status === 1 ? t('确定要关闭发送么？') : t('确定开启发送么?'),
         t('警告'),
         {
           center: true,
@@ -161,7 +150,7 @@ export function useBillboardManager() {
         }
       )
         .then(async () => {
-          const res = await API.updateStatusById({
+          const res = await API.updateBillboardStatus({
             status: +row.status === 0 ? 1 : 0,
             id: row.id
           });
@@ -194,6 +183,7 @@ export function useBillboardManager() {
     handleTableWidthChange,
     handleCurrentChange,
     handleSelectionChange,
-    resetPasswordClick
+    updateUserStatus,
+    showDetailDialog
   };
 }

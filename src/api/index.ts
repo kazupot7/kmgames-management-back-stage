@@ -8,6 +8,7 @@ import { historyData } from "./history";
 import { roleData } from "./role";
 import { operationLogData } from "./operationLog";
 import { esportsSettlement } from "./esportsSettlement";
+import { billboardManagerData } from "./billboardManager";
 
 export const API = {
   ...user,
@@ -19,5 +20,6 @@ export const API = {
   ...historyData,
   ...operationLogData,
   ...roleData,
-  ...esportsSettlement
+  ...esportsSettlement,
+  ...billboardManagerData,
 }; 3

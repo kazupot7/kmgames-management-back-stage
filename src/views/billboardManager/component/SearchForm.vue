@@ -5,25 +5,25 @@
     :model="form"
     class="search-form bg-bg_color w-[99/100] pl-8 pt-[12px]"
   >
-    <el-form-item :label="`${t('赛事')}:`" prop="name">
-      <el-input
-        v-model="form.name"
-        :placeholder="t('请输入赛事名称或赛事ID')"
-        clearable
+    <el-form-item :label="`${t('公告类型')}:`" prop="billboardTypeCn">
+      <LanguageInput
+        v-model:cnVal="form.billboardTypeCn"
+        v-model:enVal="form.billboardTypeEn"
+        :placeholder="t('请输入公告类型')"
         maxlength="30"
-        v-enter="search"
-        class="!w-[200px]"
+        className="!w-[200px]"
+        @searchClick="search"
       />
     </el-form-item>
 
-    <el-form-item :label="`${t('标题')}:`" prop="createdBy">
-      <el-input
-        v-model="form.createdBy"
+    <el-form-item :label="`${t('标题')}:`" prop="billboardTitleCn">
+      <LanguageInput
+        v-model:cnVal="form.billboardTitleCn"
+        v-model:enVal="form.billboardTitleEn"
         :placeholder="t('请输入公告标题')"
-        clearable
-        maxlength="20"
-        v-enter="search"
-        class="!w-[200px]"
+        maxlength="30"
+        className="!w-[200px]"
+        @searchClick="search"
       />
     </el-form-item>
 
@@ -62,6 +62,7 @@ import { useRenderIcon } from '@/components/ReIcon/src/hooks';
 import { type FormInstance } from 'element-plus';
 import { searchFormType } from '../utils/types';
 import dayjs from 'dayjs';
+import LanguageInput from '@/components/LanguageInput.vue';
 
 const props = defineProps<{
   loading: boolean;
@@ -72,6 +73,9 @@ const formRef = ref();
 const emits = defineEmits(['onSearch']);
 const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
+  for (let key in props.form) {
+    props.form[key] = '';
+  }
   props.form.startCreatedAt = '';
   props.form.endCreatedAt = '';
   selectDate.value = '';

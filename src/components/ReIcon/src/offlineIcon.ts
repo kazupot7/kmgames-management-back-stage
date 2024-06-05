@@ -30,19 +30,19 @@ import deleteBin_5Line from '@iconify-icons/ri/delete-bin-5-line';
 import EditPen from '@iconify-icons/ep/edit-pen';
 import Delete from '@iconify-icons/ep/delete';
 /** //-菜单icon */
-import member from "@iconify-icons/ri/account-pin-circle-line";
-import tenant from "@iconify-icons/ri/store-2-fill";
-import moneyDollarCircleFill from '@iconify-icons/ri/money-cny-circle-line';
+import userManager from "@iconify-icons/ri/account-pin-circle-line";
+import billboardManager from "@iconify-icons/ri/store-2-fill";
+import roleManager from '@iconify-icons/ri/money-cny-circle-line';
 import role from "@iconify-icons/ep/monitor";
 import virtual from "@iconify-icons/ep/files";
 import menuTree from '@iconify-icons/ri/list-unordered';
 import configCenter from '@iconify-icons/ri/settings-3-line';
 
-addIcon("member", member);
-addIcon("tenant", tenant);
-addIcon("role", role);
-addIcon("moneyDollarCircleFill", moneyDollarCircleFill);
-addIcon("virtual", virtual);
+addIcon("billboardManager", billboardManager);
+addIcon("userManager", userManager);
+addIcon("tenantManager", role);
+addIcon("roleManager", virtual);
+addIcon("virtual", roleManager);
 addIcon("history", History);
 addIcon("operationLog", OperationLog);
 addIcon("menuTree", menuTree);
