@@ -35,8 +35,8 @@
 .is-dark {
   z-index: 9999 !important;
 }
-
-.el-button.is-link:focus {
+.el-button.is-link:focus,
+.el-button.is-link:hover {
   color: var(--el-button-text-color) !important;
 }
 .el-button:focus,

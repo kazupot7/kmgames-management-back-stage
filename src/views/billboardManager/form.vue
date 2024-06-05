@@ -21,7 +21,10 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="`${t('公告标题')}:`" :prop="'billboardTitleCn'">
+        <el-form-item
+          :label="`${t('公告标题')}:`"
+          :prop="lan === 'zh' ? 'billboardTitleCn' : 'billboardTitleEn'"
+        >
           <LanguageInput
             :placeholder="t('请输入公告标题')"
             v-model:cnVal="newFormInline.billboardTitleCn"
@@ -31,7 +34,10 @@
           />
         </el-form-item>
 
-        <el-form-item :label="`${t('公告类型')}:`" :prop="'billboardTypeCn'">
+        <el-form-item
+          :label="`${t('公告类型')}:`"
+          :prop="lan === 'zh' ? 'billboardTypeCn' : 'billboardTypeEn'"
+        >
           <LanguageInput
             :placeholder="t('请输入公告类型')"
             v-model:cnVal="newFormInline.billboardTypeCn"
@@ -41,7 +47,10 @@
           />
         </el-form-item>
 
-        <el-form-item :label="`${t('公告内容')}:`" :prop="'billboardContentCn'">
+        <el-form-item
+          :label="`${t('公告内容')}:`"
+          :prop="lan === 'zh' ? 'billboardTypeCn' : 'billboardContentEn'"
+        >
           <LanguageInput
             :placeholder="t('请输入公告内容')"
             v-model:cnVal="newFormInline.billboardContentCn"
