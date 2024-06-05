@@ -98,24 +98,12 @@ import dayjs from 'dayjs';
 const props = defineProps<{
   loading: boolean;
   form: SearchFormType;
+  tenantList: TenantAPI.getAllSimplifiedTenant[];
 }>();
 
 const formRef = ref<FormInstance>();
 const selectDate = ref('');
 const emits = defineEmits(['onSearch']);
-const tenantList = reactive<TenantAPI.getAllSimplifiedTenant[]>([]);
-
-onMounted(() => {
-  initAccountList();
-});
-
-//- 获取账号列表
-const initAccountList = async () => {
-  const res = await API.getAllSimplifiedTenants();
-  if (res.code) return;
-  tenantList.length = 0;
-  tenantList.push(...res.data);
-};
 
 const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields();

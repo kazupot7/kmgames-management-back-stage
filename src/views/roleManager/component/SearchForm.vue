@@ -20,8 +20,8 @@
       <el-form-item :label="`${t('状态')}:`" prop="status">
         <el-select class="!w-[150px]" v-model="form.status">
           <el-option :value="' '" :label="t('全部状态')"></el-option>
-          <el-option :value="0" :label="t('启用')"></el-option>
-          <el-option :value="1" :label="t('禁用')"></el-option>
+          <el-option :value="1" :label="t('启用')"></el-option>
+          <el-option :value="0" :label="t('禁用')"></el-option>
         </el-select>
       </el-form-item>
 
