@@ -51,7 +51,6 @@ import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
 import { FormInstance } from 'element-plus/es/components/form';
 import { message } from '@/utils/message';
-import { removeEmptyStringKeys } from '@/utils/utilFn';
 
 const { switchStyle } = usePublicHooks();
 
@@ -75,8 +74,9 @@ const confirmClick = () => {
   ruleFormRef.value.validate(async v => {
     const requestAPI = newFormInline.roleId ? 'updateRole' : 'addRole';
     if (v) {
+      if (!newFormInline.roleId) delete newFormInline.roleId;
       const res = await API[requestAPI]({
-        ...(removeEmptyStringKeys(newFormInline) as RoleAPI.addSysAccountRes),
+        ...(newFormInline as RoleAPI.addSysAccountRes),
         status: Number(newFormInline.status)
       });
       message(res.msg, { type: res.code ? 'error' : 'success' });

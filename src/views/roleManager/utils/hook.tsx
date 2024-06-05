@@ -72,7 +72,7 @@ export function useRoleHook() {
   //- 修改启用状态
   const updateUserStatus = async (row: RoleAPI.querySysAccountListData) => {
     if (row.userCount > 0 && +row.status === 1) {
-      ElMessageBox.confirm(
+      return ElMessageBox.confirm(
         <div class="text-center">{`${t('该角色下仍有')}${row.userCount}${t(
           '个用户'
         )},${t('禁用此角色将导致这些用户无法访问系统。是否继续?')}`}</div>,
@@ -82,10 +82,13 @@ export function useRoleHook() {
           type: 'warning'
         }
       )
-        .then(() => changeOpenStatus(row))
+        .then(async () => {
+          await changeOpenStatus(row);
+          return Promise.resolve(true);
+        })
         .catch(() => Promise.reject());
     } else {
-      ElMessageBox.confirm(
+      return ElMessageBox.confirm(
         +row.status === 1
           ? t('确定要关闭当前角色么？')
           : t('确定开启当前角色么?'),
@@ -94,7 +97,12 @@ export function useRoleHook() {
           center: true,
           type: 'warning'
         }
-      ).then(() => changeOpenStatus(row));
+      )
+        .then(async () => {
+          changeOpenStatus(row);
+          return Promise.resolve(true);
+        })
+        .catch(() => Promise.reject());
     }
   };
 

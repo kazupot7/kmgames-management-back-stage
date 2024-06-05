@@ -1,7 +1,5 @@
 import { t } from '@/plugins/i18n';
-import { parseCountry } from '@/utils/formatMatch';
 import { handleTableWidth } from '@/utils/getTableWidth';
-import { ESPORT_ID_MAP } from '@/utils/maps/sports_map';
 
 export const columns: TableColumnList = [
   {
@@ -32,7 +30,7 @@ export const columns: TableColumnList = [
   {
     label: t('备注'),
     prop: 'comment',
-    formatter: ({ comment }) => comment ?? '-',
+    formatter: ({ comment }) => (comment ? comment : '-'),
     headerRenderer: d => handleTableWidth(d, t('备注'), 'auto')
   },
   {

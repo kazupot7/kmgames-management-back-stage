@@ -41,7 +41,8 @@
       <el-input
         type="textarea"
         v-model="newFormInline.comment"
-        maxLength="255"
+        maxlength="255"
+        show-word-limit
         :placeholder="t('只能输入255个字符的内容')"
       />
     </el-form-item>
