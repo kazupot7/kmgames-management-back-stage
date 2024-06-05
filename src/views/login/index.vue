@@ -124,12 +124,12 @@ const _loginRequest = async () => {
     loading.value = false;
     if (res.code) return message(res.msg, { type: 'error' });
     //- 第一次登录强制弹出充值密码弹窗
+    message(t('登录成功'), { type: 'success' });
+    userStore.setUserInfo(res.data);
     if (ruleForm.password === '123456') {
       ruleForm.password = '';
       return openResetDialog();
     }
-    message(t('登录成功'), { type: 'success' });
-    userStore.setUserInfo(res.data);
     initRouter().then(() => {
       router.push(getTopMenu(true).path);
     });
