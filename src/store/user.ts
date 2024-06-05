@@ -24,8 +24,15 @@ export const useUserStore = defineStore('USERSTATE', {
       removeStorage();
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
+      this.signOut();
       this.userInfo = {};
       router.push("/login");
+    },
+    async signOut() {
+      API.loginOut({
+        id: this.userInfo.id as number,
+        name: this.userInfo.name
+      })
     },
     setUserInfo(_: UserAPI.LoginData) {
       this.userInfo = Object.assign(this.userInfo, _)
