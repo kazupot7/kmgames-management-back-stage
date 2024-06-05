@@ -10,4 +10,16 @@ export const SysTemConfigData = {
     id: number;
     dictValue: string;
   }) => http.request<SysTemConfigAPI.updateDictResType>("post", "/sysDict/v1/update", { data }),
+
+  //- 维护列表
+  sysMaintainList: () => http.request<SysTemConfigAPI.sysMainListResType>("post", "/sysMaintain/v1/list", {
+    data: {},
+  }),
+
+  //- 维护状态开启关闭
+  sysMaintainUpdateStatus: (data: {
+    id: number;
+    status: number;
+  }) => http.request<SysTemConfigAPI.sysMaintainUpdateStatusResType>("post", "/sysMaintain/v1/updateStatus", { data }),
+
 };
