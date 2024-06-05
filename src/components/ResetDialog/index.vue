@@ -3,8 +3,9 @@
     <el-form
       ref="resetFormRef"
       :model="resetForm"
-      :rules="resetPasswordRules(resetForm)"
+      :rules="resetPasswordRules"
       size="large"
+      @validate="validate"
     >
       <el-form-item
         prop="oldPassword"
@@ -59,8 +60,8 @@ import { t } from '@/plugins/i18n';
 import { useUserStore } from '@/store/user';
 import { getMD5 } from '@/utils/caypto';
 import { message } from '@/utils/message';
-import { resetPasswordRules } from '@/views/login/utils/rule';
 import { IResetForm } from '@/views/login/utils/type';
+import { REGEXP_PWD } from '@/views/tenantManager/whiteManager/utils/rule';
 import { FormInstance } from 'element-plus/es/components/form';
 
 const resetFormRef = ref<FormInstance>();
@@ -74,18 +75,61 @@ const resetForm = reactive<IResetForm>({
 });
 
 const emits = defineEmits(['changeDisabledStatus', 'closeDialog']);
-watch(
-  () => resetForm,
-  async _ => {
-    const r: boolean = await new Promise(resolve =>
-      resetFormRef.value.validate(resolve)
-    );
-    isDisabled.value = !r;
-  },
-  {
-    deep: true
-  }
-);
+const validateList = {
+  oldPassword: false,
+  newPassword: false,
+  confirmPassword: false
+};
+
+//表单校验
+const validate = (formItemProp, isValid) => {
+  validateList[formItemProp] = isValid;
+  isDisabled.value = !Object.values(validateList).every(item => item);
+};
+
+/** 重置密码校验 */
+const resetPasswordRules = reactive({
+  oldPassword: [
+    {
+      validator: (_, value, callback) => {
+        if (value === '') {
+          callback(new Error(t('旧密码不能为空')));
+        } else {
+          callback();
+        }
+      },
+      trigger: 'blur'
+    }
+  ],
+  newPassword: [
+    {
+      validator: (_, value, callback) => {
+        if (value === '') {
+          callback(new Error(t('新密码不能为空')));
+        } else if (!REGEXP_PWD.test(value)) {
+          callback(new Error(t('密码至少8个字符，包括字母和数字')));
+        } else {
+          callback();
+        }
+      },
+      trigger: 'blur'
+    }
+  ],
+  confirmPassword: [
+    {
+      validator: (_, value, callback) => {
+        if (value === '') {
+          callback(new Error(t('确认密码不能为空')));
+        } else if (resetForm.newPassword !== value) {
+          callback(new Error(t('两次输入的密码不一致，请重新输入')));
+        } else {
+          callback();
+        }
+      },
+      trigger: 'change'
+    }
+  ]
+});
 
 const resetPassword = async () => {
   const res = await API.updatePwd({

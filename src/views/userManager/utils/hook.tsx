@@ -152,7 +152,7 @@ export function useUserManager() {
   ) => {
     return new Promise<boolean>((resolve, reject) => {
       ElMessageBox.confirm(
-        +row.status === 1 ? t('确定要开启用户么？') : t('确定关闭用户么?'),
+        +row.status === 0 ? t('确定要开启用户么？') : t('确定关闭用户么?'),
         t('警告'),
         {
           center: true,

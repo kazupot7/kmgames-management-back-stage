@@ -43,51 +43,6 @@ const loginRules = reactive(<FormRules>{
 
 });
 
-/** 重置密码校验 */
-const resetPasswordRules = <T extends IResetForm>(form: T) => {
-  return {
-    oldPassword: [
-      {
-        validator: (_, value, callback) => {
-          if (value === "") {
-            callback(new Error(t("旧密码不能为空")));
-          } else {
-            callback();
-          }
-        },
-        trigger: "blur"
-      }
-    ],
-    newPassword: [
-      {
-        validator: (_, value, callback) => {
-          if (value === "") {
-            callback(new Error(t("新密码不能为空")));
-          } else if (!REGEXP_PWD.test(value)) {
-            callback(new Error(t("密码至少8个字符，包括字母和数字")));
-          } else {
-            callback();
-          }
-        },
-        trigger: "blur"
-      }
-    ],
-    confirmPassword: [
-      {
-        validator: (_, value, callback) => {
-          if (value === "") {
-            callback(new Error(t("确认密码不能为空")));
-          } else if (form.newPassword !== value) {
-            callback(new Error(t("两次输入的密码不一致，请重新输入")));
-          } else {
-            callback();
-          }
-        },
-        trigger: "blur"
-      }
-    ],
-  }
-}
 
 
-export { loginRules, resetPasswordRules };
+export { loginRules };
