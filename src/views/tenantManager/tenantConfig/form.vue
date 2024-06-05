@@ -84,7 +84,7 @@
         <el-col :span="12">
           <el-form-item :label="t('管理员')" prop="adminAccount" required>
             <el-input
-              :placeholder="t('6-12个字符（英文数字）')"
+              :placeholder="t('5-12个字符（英文数字）')"
               v-model="newFormInline.adminAccount"
               :disabled="!!newFormInline.id"
             />
