@@ -91,7 +91,8 @@ export function useUserManager() {
             avatar: row?.avatar ?? '',
             isAdmmin: row?.isAdmin ?? 1,
             pwd: row?.pwd ?? getMD5('123456'),
-            id: row?.id ?? ''
+            id: row?.id ?? '',
+            ukeyCode: row?.ukeyCode ?? ''
           },
           onCloseDialog: (
             closeType?: string,

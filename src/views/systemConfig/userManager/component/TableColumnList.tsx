@@ -25,6 +25,14 @@ export const columns: TableColumnList = [
     minWidth: 150
   },
   {
+    label: t('U盾序列号'),
+    prop: 'roleName',
+    minWidth: 150,
+    formatter: ({ ukeyCode }): string => {
+      return ukeyCode ?? '-';
+    }
+  },
+  {
     label: t('创建时间'),
     minWidth: 200,
     prop: 'createdAt'

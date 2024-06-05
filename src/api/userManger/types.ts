@@ -8,6 +8,7 @@ declare namespace UserMangerAPI {
     comment: string;
     status: string | number | boolean;
     pwd: string;
+    ukeyCode: string;
     isAdmmin: number;
     avatar: string;
   };
