@@ -9,7 +9,7 @@
     <el-form-item :label="t('账号名称')" prop="name" required>
       <el-input
         :disabled="!!newFormInline.id"
-        v-model="newFormInline.name"
+        v-model.trim="newFormInline.name"
         clearable
         :placeholder="t('请输入6-20个英文字母或数字')"
       />
@@ -35,6 +35,14 @@
           :key="item.id"
         />
       </el-select>
+    </el-form-item>
+
+    <el-form-item :label="t('U盾序列号')" prop="ukeyCode">
+      <el-input
+        v-model.trim="newFormInline.ukeyCode"
+        maxlength="30"
+        :placeholder="t('请输入U盾序列号')"
+      />
     </el-form-item>
 
     <el-form-item :label="t('备注')" prop="comment">

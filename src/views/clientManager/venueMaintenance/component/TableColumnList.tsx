@@ -20,7 +20,7 @@ export const columns: TableColumnList = [
     prop: 'updatedBy'
   },
   {
-    label: t('状态'),
+    label: t('维护状态'),
     slot: 'status'
   },
   {

@@ -27,6 +27,7 @@ const formRules = reactive(<FormRules>{
   ],
   dept: [{ required: true, message: t('所属部门不能为空') }],
   roleId: [
+    { required: true, message: t('角色不能为空') },
     {
       validator: (_, value, callback) => {
         if (value === "") {
@@ -37,6 +38,9 @@ const formRules = reactive(<FormRules>{
       },
       trigger: "blur"
     }
+  ],
+  ukeyCode: [
+    import.meta.env.VITE_BUILD_TYPE === 'pro' ? { required: true, message: t('U盾序列号不能为空不能为空') } : {},
   ],
 });
 
