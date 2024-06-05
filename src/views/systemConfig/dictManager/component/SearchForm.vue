@@ -16,7 +16,7 @@
       />
     </el-form-item>
 
-    <el-form-item :label="`${t('模块')}:`" prop="staus">
+    <el-form-item :label="`${t('模块')}:`" prop="status">
       <el-select v-model="form.model" clearable class="!w-[200px]" filterable>
         <el-option :label="t('全部')" :value="' '" />
         <el-option

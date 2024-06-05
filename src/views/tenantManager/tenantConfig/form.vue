@@ -301,7 +301,7 @@
             prop="commissionRatio"
           >
             <el-input
-              :formatter="v => formatNumber(v, 3)"
+              :formatter="v => formatPercentageNumber(v, 5)"
               v-model="newFormInline.commissionRatio"
               :placeholder="t('请输入抽成比例')"
             />
@@ -390,7 +390,7 @@ import {
   PAYMENT_TYPE,
   CURRENCY_TYPE
 } from './utils/map';
-import { formatNumber } from '@/utils/formatNumber';
+import { formatPercentageNumber } from '@/utils/formatNumber';
 import { ElMessageBox } from 'element-plus';
 import { message } from '@/utils/message';
 const { switchStyle } = usePublicHooks();

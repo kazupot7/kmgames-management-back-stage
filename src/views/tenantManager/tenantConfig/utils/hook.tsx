@@ -88,7 +88,7 @@ export function useTenantHook() {
             agentId: row?.agentId ?? '', //- 上级 接口获取
             baseUrlType_40: row?.baseUrlType_40 ?? '', //-钱包 加扣款
             baseUrlType_50: row?.baseUrlType_50 ?? '', //-钱包 回调
-            commissionRatio: row?.commissionRatio ?? '', // - 抽成比例
+            commissionRatio: +row?.commissionRatio ?? '', // - 抽成比例
             tenantLevel: row?.tenantLevel ?? '', //- 商户等级
             commissionRatioType: row?.commissionRatioType ?? '', //- 计算模式
             paymentCycle: row?.paymentCycle ?? '', //-  缴费周期

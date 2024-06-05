@@ -171,7 +171,7 @@ declare namespace TenantAPI {
     pageSize: number;
     createdBy?: string;
     name?: string;
-    staus?: string;
+    status?: string;
     startCreatedAt?: string;
     endCreatedAt?: string;
   }

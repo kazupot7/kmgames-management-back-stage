@@ -22,7 +22,7 @@ export function useUserManager() {
   const form = reactive<searchFormType>({
     name: '',
     createdBy: '',
-    staus: ' ',
+    status: ' ',
     startCreatedAt: '',
     endCreatedAt: ''
   });

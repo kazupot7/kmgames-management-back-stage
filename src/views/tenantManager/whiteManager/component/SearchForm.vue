@@ -27,8 +27,8 @@
       />
     </el-form-item>
 
-    <el-form-item :label="`${t('商户类型')}:`" prop="staus">
-      <el-select v-model="form.staus" clearable class="!w-[150px]">
+    <el-form-item :label="`${t('商户类型')}:`" prop="status">
+      <el-select v-model="form.status" clearable class="!w-[150px]">
         <el-option :label="t('全部')" :value="' '" />
         <el-option :label="t('禁用')" :value="0" />
         <el-option :label="t('启用')" :value="1" />
