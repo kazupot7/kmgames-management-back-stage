@@ -11,6 +11,7 @@ declare namespace BillboardManagerAPI {
     billboardTypeEn: string;
     billboardContentCn: string;
     billboardContentEn: string;
+    billClassify: number;
   };
   type querySysAccountListReqType = {
     pageNum: number;
@@ -57,6 +58,7 @@ declare namespace BillboardManagerAPI {
     createdBy: string;
     updatedAt: string;
     updatedBy: string;
+    billClassify: number;
     sendAt?: any;
   }
 

@@ -6,6 +6,7 @@ export type EidtAndUpdateFormType = {
   billboardTitleEn: string;
   billboardTypeEn: string;
   billboardContentEn: string;
+  billClassify: number;
   id?: number | string;
 }
 
