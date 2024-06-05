@@ -4,7 +4,7 @@
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
-        <el-button type="primary" @click="openDialog(t('新增白名单'))" v-if="hasAuth('WHITEMANAGERADD')">
+        <el-button type="primary" @click="openDialog(t('新增白名单'))">
           {{ t('新增') }}
         </el-button>
       </template>
@@ -53,7 +53,6 @@
               type="primary"
               :size="size"
               @click="openDialog(t('修改白名单'), row)"
-              v-if="hasAuth('WHITEMANAGERUPDATE')"
             >
               {{ t('编辑') }}
             </el-button>
@@ -63,7 +62,6 @@
               link
               type="danger"
               :size="size"
-              v-if="hasAuth('ROLEMANAGERDELETE')"
             >
               {{ t('删除') }}
             </el-button>
@@ -81,7 +79,6 @@ import SearchForm from './component/SearchForm.vue';
 import { columns } from './component/TableColumnList';
 import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
-import { hasAuth } from '@/router/utils';
 
 const { switchStyle } = usePublicHooks();
 const { tableHeaderStyle } = usePublicHooks();

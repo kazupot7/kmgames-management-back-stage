@@ -9,7 +9,7 @@
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
-        <el-button type="primary" @click="openDialog(t('新增商户'))"  v-if="hasAuth('TENANTMANAGERADD')">
+        <el-button type="primary" @click="openDialog(t('新增商户'))">
           {{ t('新增商户') }}
         </el-button>
       </template>
@@ -47,7 +47,6 @@
               type="primary"
               :size="size"
               @click="openDialog(t('编辑商户'), row)"
-              v-if="hasAuth('TENANTMANAGERUPDATE')"
             >
               {{ t('编辑') }}
             </el-button>
@@ -57,7 +56,6 @@
               type="danger"
               :size="size"
               @click="delTenantClick(row)"
-              v-if="hasAuth('TENANTMANAGERDELETE')"
             >
               {{ t('删除') }}
             </el-button>
@@ -74,7 +72,6 @@ import { useTenantHook } from './utils/hook';
 import SearchForm from './component/SearchForm.vue';
 import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
-import { hasAuth } from '@/router/utils';
 
 defineOptions({ name: 'tenantManager' });
 const { tableHeaderStyle } = usePublicHooks();

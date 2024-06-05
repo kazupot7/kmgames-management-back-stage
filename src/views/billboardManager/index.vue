@@ -4,10 +4,7 @@
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
-        <el-button
-          type="primary"
-          v-if="hasAuth('BILLBOARDADD')"
-         @click="openDialog(t('新增公告'))">
+        <el-button type="primary" @click="openDialog(t('新增公告'))">
           {{ t('新增公告') }}
         </el-button>
       </template>
@@ -58,7 +55,6 @@
               type="primary"
               :size="size"
               @click="openDialog(t('修改公共'), row)"
-              v-if="hasAuth('BILLBOARDUPDATE')"
             >
               {{ t('编辑') }}
             </el-button>
@@ -68,7 +64,6 @@
               link
               type="danger"
               :size="size"
-              v-if="hasAuth('BILLBOARDDELETE')"
             >
               {{ t('删除') }}
             </el-button>
@@ -86,7 +81,6 @@ import SearchForm from './component/SearchForm.vue';
 import { columns } from './component/TableColumnList';
 import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
-import { hasAuth } from '@/router/utils';
 
 const { tableHeaderStyle } = usePublicHooks();
 
