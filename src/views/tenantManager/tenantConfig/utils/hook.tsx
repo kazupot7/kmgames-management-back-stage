@@ -79,7 +79,7 @@ export function useTenantHook() {
             name: row?.name ?? '', //- 商户名称
             tenantKey: row?.tenantKey ?? '', //- 商户密钥 新增接口获取
             tenantType: row?.tenantType ?? '', //- 商户类型
-            adminAccount: row?.adminAccount ?? '', //- 管理员
+            adminAccount: 'admin', //- 管理员
             tenantCode: row?.tenantCode ?? '', //- 商户编码
             adminPassword: row?.adminPassword ?? '123456', //- 管理员密码
             googleAuth: row?.googleAuth ?? '', // - 谷歌密钥 接口获取

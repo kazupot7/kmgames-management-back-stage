@@ -19,11 +19,11 @@ export const formRules = reactive(<FormRules>{
   tenantType: [{ required: true, message: t("商户类型不能为空"), trigger: "blur" }],
   adminAccount: [{
     validator: (_, value, callback) => {
-      const amindReg = /^[a-zA-Z0-9]{6,12}$/;
+      const amindReg = /^[a-zA-Z0-9]{5,12}$/;
       if (value === "") {
         callback(new Error(t("管理员账号不能为空")));
       } else if (!amindReg.test(value)) {
-        callback(new Error(t("管理员账号为6-12个字符")));
+        callback(new Error(t("管理员账号为5-12个字符")));
       } else {
         callback();
       }

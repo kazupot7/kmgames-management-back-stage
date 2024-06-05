@@ -54,6 +54,10 @@
       />
     </el-form-item>
 
+    <el-form-item :label="t('启用状态')" prop="status">
+      <el-checkbox v-model="newFormInline.status" :label="t('是否启用')" />
+    </el-form-item>
+
     <div class="flex justify-end">
       <el-button @click="closeDialog">{{ t('取消') }}</el-button>
       <el-button type="primary" @click="confirmClick">{{
