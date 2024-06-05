@@ -12,13 +12,12 @@
         v-model="valueHtml"
         :defaultConfig="editorConfig"
         :mode="mode"
-        style="height: 500px; font-size: 14px; overflow-y: hidden"
+        style="height: 500px; overflow-y: hidden"
         @onCreated="handleCreated"
       />
     </div>
     <div class="mt-2">
       <el-button
-        :loading="btnLoading"
         auto-insert-space
         class="min-w-32"
         type="primary"
@@ -42,7 +41,6 @@ defineOptions({
 });
 
 const list = reactive<ClientManagerAPI.searchIpData[]>([]);
-const btnLoading = ref(false);
 
 const mode = 'simple';
 const editorRef = shallowRef();
@@ -57,9 +55,11 @@ onMounted(() => {
 const initWhiteList = async () => {
   const res = await API.searchIp();
   list.push(...res.data);
+  valueHtml.value = '';
   list.forEach(item => {
-    valueHtml.value += `<p>${item.addr},</p>`;
+    valueHtml.value += item.addr;
   });
+  valueHtml.value.trim();
 };
 
 const editorConfig = { placeholder: t('请输入内容...') };
@@ -74,9 +74,7 @@ const saveIPClick = () => {
     center: true,
     type: 'warning'
   }).then(async () => {
-    btnLoading.value = true;
     const res = await API.updateIp({ addr: text });
-    btnLoading.value = false;
     message(res.msg, { type: res.code ? 'error' : 'success' });
   });
 };
