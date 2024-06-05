@@ -1,31 +1,3 @@
-<script setup lang="ts">
-import SidebarItem from './sidebarItem.vue';
-import { isAllEmpty } from '@pureadmin/utils';
-import { ref, nextTick, computed } from 'vue';
-import { useNav } from '@/layout/hooks/useNav';
-import { useTranslationLang } from '../../hooks/useTranslationLang';
-import { usePermissionStoreHook } from '@/store/permission';
-import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line';
-import Setting from '@iconify-icons/ri/settings-3-line';
-import LanguageNav from '@/components/LanguageNav/index.vue';
-import { t } from '@/plugins/i18n';
-import { useResetPasswordHook } from '@/hooks/resetPasswordHook';
-
-const menuRef = ref();
-
-const { route } = useTranslationLang(menuRef);
-const { title, logout, backTopMenu, onPanel, userAvatar } = useNav();
-
-const defaultActive = computed(() =>
-  !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
-);
-const { openResetDialog } = useResetPasswordHook();
-
-nextTick(() => {
-  menuRef.value?.handleResize();
-});
-</script>
-
 <template>
   <div
     v-loading="usePermissionStoreHook().wholeMenus.length === 0"
@@ -60,6 +32,9 @@ nextTick(() => {
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover">
           <img :src="userAvatar" />
+          <p v-if="userStore.userInfo.name" class="dark:text-white ml-1">
+            {{ userStore.userInfo.name }}
+          </p>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
@@ -89,6 +64,36 @@ nextTick(() => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import SidebarItem from './sidebarItem.vue';
+import { isAllEmpty } from '@pureadmin/utils';
+import { ref, nextTick, computed } from 'vue';
+import { useNav } from '@/layout/hooks/useNav';
+import { useTranslationLang } from '../../hooks/useTranslationLang';
+import { usePermissionStoreHook } from '@/store/permission';
+import LogoutCircleRLine from '@iconify-icons/ri/logout-circle-r-line';
+import Setting from '@iconify-icons/ri/settings-3-line';
+import LanguageNav from '@/components/LanguageNav/index.vue';
+import { t } from '@/plugins/i18n';
+import { useResetPasswordHook } from '@/hooks/resetPasswordHook';
+import { useUserStore } from '@/store/user';
+
+const menuRef = ref();
+
+const { route } = useTranslationLang(menuRef);
+const { title, logout, backTopMenu, onPanel, userAvatar } = useNav();
+
+const defaultActive = computed(() =>
+  !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
+);
+const { openResetDialog } = useResetPasswordHook();
+const userStore = useUserStore();
+
+nextTick(() => {
+  menuRef.value?.handleResize();
+});
+</script>
 
 <style lang="scss" scoped>
 :deep(.el-loading-mask) {

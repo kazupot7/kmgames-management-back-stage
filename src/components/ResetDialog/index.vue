@@ -138,8 +138,15 @@ const resetPassword = async () => {
     newPwd: getMD5(resetForm.newPassword)
   });
   if (res.code) return message(res.msg, { type: 'error' });
-  else message(t('修改成功，请重新登录'), { type: 'success' });
-  closeDialog();
+  else
+    message(t('修改成功，请重新登录'), {
+      type: 'success',
+      duration: 1000,
+      onClose: () => {
+        closeDialog();
+        userStore.logOut();
+      }
+    });
 };
 
 const closeDialog = () => {
