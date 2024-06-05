@@ -7,7 +7,8 @@
         <el-button
           type="primary"
           v-if="hasAuth('BILLBOARDADD')"
-         @click="openDialog(t('新增公告'))">
+          @click="openDialog(t('新增公告'))"
+        >
           {{ t('新增公告') }}
         </el-button>
       </template>
@@ -97,12 +98,12 @@ const {
   loading,
   dataList,
   pagination,
+  form,
   onSearch,
   openDialog,
   handleTableWidthChange,
   handleCurrentChange,
   handleSelectionChange,
-  form,
   handleDelete,
   updateUserStatus,
   showDetailDialog
