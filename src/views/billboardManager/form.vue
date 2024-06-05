@@ -9,29 +9,44 @@
         class="pr-10"
         label-width="100px"
       >
-        <el-form-item :label="t('公告标题')" prop="name" required>
-          <el-input
-            v-model="newFormInline.name"
-            clearable
+        <el-form-item
+          :label="`${t('公告标题')}:`"
+          :prop="lan === 'zh' ? 'billboardTitleCn' : 'billboardTitleEn'"
+        >
+          <LanguageInput
             :placeholder="t('请输入公告标题')"
+            v-model:cnVal="newFormInline.billboardTitleCn"
+            v-model:enVal="newFormInline.billboardTitleEn"
+            maxlength="30"
+            :compnentLan="lan"
           />
         </el-form-item>
 
-        <el-form-item :label="t('公告类型')" prop="dept">
-          <el-input
-            v-model="newFormInline.name"
-            clearable
+        <el-form-item
+          :label="`${t('公告类型')}:`"
+          :prop="lan === 'zh' ? 'billboardTypeCn' : 'billboardTypeEn'"
+        >
+          <LanguageInput
             :placeholder="t('请输入公告类型')"
+            v-model:cnVal="newFormInline.billboardTypeCn"
+            v-model:enVal="newFormInline.billboardTypeEn"
+            maxlength="20"
+            :compnentLan="lan"
           />
         </el-form-item>
 
-        <el-form-item :label="t('公告内容')" prop="roleId">
-          <el-input
-            type="textarea"
-            v-model="newFormInline.comment"
+        <el-form-item
+          :label="`${t('公告内容')}:`"
+          :prop="lan === 'zh' ? 'billboardContentCn' : 'billboardContentEn'"
+        >
+          <LanguageInput
+            :placeholder="t('请输入公告内容')"
+            v-model:cnVal="newFormInline.billboardContentCn"
+            v-model:enVal="newFormInline.billboardContentEn"
             maxLength="855"
             rows="5"
-            :placeholder="t('请输入公告内容')"
+            type="textarea"
+            :compnentLan="lan"
           />
         </el-form-item>
 
@@ -55,54 +70,51 @@ import { FormInstance } from 'element-plus/es/components/form';
 // import { removeEmptyStringKeys } from '@/utils/utilFn';
 import LanguageGroup from '@/components/Form/LanguageGroup.vue';
 import ConfirmDialog from './component/ConfirmDialog.vue';
+import LanguageInput from '@/components/LanguageInput.vue';
+
 import {
   addDialog,
-  closeAllDialog,
   closeDialog as closeItemDialog
 } from '@/components/ReDialog';
+import { EidtAndUpdateFormType } from './utils/types';
+import { useCommonStore } from '@/store/common';
 
 const props = defineProps<{
-  row: UserMangerAPI.addSysAccountRes;
+  renderData: EidtAndUpdateFormType;
 }>();
 
 const emits = defineEmits(['closeDialog']);
-
-onMounted(() => {
-  getRoleList();
-});
-
-const roleList = reactive<RoleAPI.querySysAccountListData[]>([]);
-const getRoleList = async () => {
-  const res = await API.querySysAccountList({
-    pageNum: 1,
-    pageSize: 9999
-  });
-  roleList.length = 0;
-  roleList.push(...res.data.list);
-};
+const commonStore = useCommonStore();
 
 const ruleFormRef = ref<FormInstance>();
-const newFormInline = reactive(props.row);
+const newFormInline = reactive(props.renderData);
 
 const closeDialog = () => {
   emits('closeDialog');
 };
 
 const confirmClick = () => {
-  addDialog({
-    title: t('发送确认'),
-    width: '40%',
-    closeOnClickModal: false,
-    hideFooter: true,
-    contentRenderer: ({ options, index }) =>
-      h(ConfirmDialog, {
-        onCloseDialog: (type?: 'closeAll') => {
-          type === 'closeAll'
-            ? closeAllDialog()
-            : closeItemDialog(options, index);
-        }
-      })
+  ruleFormRef.value?.validate(async v => {
+    if (v) {
+      addDialog({
+        title: t('发送确认'),
+        width: '40%',
+        closeOnClickModal: false,
+        hideFooter: true,
+        contentRenderer: ({ options, index }) =>
+          h(ConfirmDialog, {
+            inputData: newFormInline,
+            onCloseDialog: (type?: 'closeAll') => {
+              if (type === 'closeAll') {
+                emits('closeDialog', 'reload');
+              }
+              closeItemDialog(options, index);
+            }
+          })
+      });
+    }
   });
+
   /* ruleFormRef.value.validate(async v => {
     const requestAPI = newFormInline.id ? 'updateSysAccount' : 'addSysAccount';
     if (v) {
@@ -118,6 +130,10 @@ const confirmClick = () => {
     }
   }); */
 };
+
+const lan = computed(() => {
+  return commonStore.inputLanType;
+});
 </script>
 
 <style lang="scss"></style>

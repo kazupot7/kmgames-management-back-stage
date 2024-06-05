@@ -1,4 +1,15 @@
-import { depList } from '../utils/map';
+import { storageLocal } from '@pureadmin/utils';
+
+interface ILocaleType {
+  locale: 'zh' | 'en' | 'fr';
+}
+
+const getLangueageRenderData = ([zhContent, enContent]: string[]) => {
+  const lan =
+    (storageLocal().getItem('responsive-locale') as ILocaleType)?.locale ??
+    'zh';
+  return lan === 'zh' ? zhContent : enContent;
+};
 
 export const columns: TableColumnList = [
   {
@@ -9,34 +20,43 @@ export const columns: TableColumnList = [
   {
     label: t('公告标题'),
     minWidth: 150,
-    prop: 'name'
-  },
-  {
-    label: t('公告类别'),
-    prop: 'dept',
-    minWidth: 150,
-    formatter: ({ dept }): string => {
-      return depList.find(item => +item.key === +dept)?.val;
+    formatter: ({ billboardTitleCn, billboardTitleEn }): string => {
+      return getLangueageRenderData([billboardTitleCn, billboardTitleEn]);
     }
   },
   {
+    label: t('公告类别'),
+    minWidth: 150,
+    formatter: ({ billboardTypeCn, billboardTypeEn }): string => {
+      return getLangueageRenderData([billboardTypeCn, billboardTypeEn]);
+    }
+  },
+
+  {
     label: t('公告内容'),
-    prop: 'roleName',
-    minWidth: 230
+    minWidth: 230,
+    formatter: ({ billboardContentCn, billboardContentEn }): string => {
+      return getLangueageRenderData([billboardContentCn, billboardContentEn]);
+    }
   },
   {
     label: t('创建人'),
-    minWidth: 200,
-    prop: 'createdAt'
+    minWidth: 150,
+    prop: 'createdBy'
+  },
+  {
+    label: t('发送状态'),
+    slot: 'status'
   },
   {
     label: t('发送时间'),
     minWidth: 200,
-    prop: 'lastLoginTime'
+    prop: 'updatedAt'
   },
   {
-    label: t('建立时间'),
-    prop: 'lastLoginIp'
+    label: t('创建时间'),
+    minWidth: 200,
+    prop: 'createdAt'
   },
   {
     label: t('操作'),
