@@ -68,6 +68,7 @@ export function useUserManager() {
     onSearch();
   };
 
+  const editFormRef = ref();
   //- 新增/修改账号弹窗
   function openDialog(
     title: string,
@@ -80,6 +81,7 @@ export function useUserManager() {
       hideFooter: true,
       contentRenderer: ({ options, index }) =>
         h(editForm, {
+          ref: editFormRef,
           row: {
             name: row?.name ?? '',
             dept: row?.dept ?? '',
@@ -91,9 +93,28 @@ export function useUserManager() {
             pwd: row?.pwd ?? getMD5('123456'),
             id: row?.id ?? ''
           },
-          onCloseDialog: (closeType?: string) => {
+          onCloseDialog: (
+            closeType?: string,
+            isShowSuccessDialog?: boolean
+          ) => {
             if (closeType) onSearch('reload');
             closeDialog(options, index);
+            if (isShowSuccessDialog) {
+              ElMessageBox.confirm(
+                <div class="flex items-center flex-col font-bold">
+                  <span>{t('新增账号成功')}</span>
+                  <span>
+                    {t('账号')}: {editFormRef.value?.newFormInline.name}
+                  </span>
+                  <span>{t('密码')}: 123456</span>
+                </div>,
+                '',
+                {
+                  center: true,
+                  showCancelButton: false
+                }
+              );
+            }
           }
         })
     });
