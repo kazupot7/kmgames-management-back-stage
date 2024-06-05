@@ -8,9 +8,17 @@ export const formatNumber = (val: string, len?: number) => {
 
 //- 格式数字为百分比
 export const formtPercentage = (n: number) => {
-  const percentage = (n * 100).toFixed(0) + '%';
+  const percentage = +n + '%';
   return percentage;
 }
+
+//- 百分比输入
+export const formatPercentageNumber = (val: string, len?: number) => {
+  if (val === '0') return val;
+  const regex = /[^-?\d*\.?\d*]/g; // 指定的正则表达式
+  return val.replace(regex, '').slice(0, len ?? MAX_INPUT_NUMBER_LENGTH)
+}
+
 
 //- 过滤中文跟空格
 export const formatChinese = (val: string, len?: number) => {

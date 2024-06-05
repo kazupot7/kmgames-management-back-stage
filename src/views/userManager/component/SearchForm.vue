@@ -27,11 +27,11 @@
       />
     </el-form-item>
 
-    <el-form-item :label="`${t('状态')}:`" prop="staus">
-      <el-select v-model="form.staus" clearable class="!w-[150px]">
+    <el-form-item :label="`${t('状态')}:`" prop="status">
+      <el-select v-model="form.status" clearable class="!w-[150px]">
         <el-option :label="t('全部')" :value="' '" />
-        <el-option :label="t('禁用')" :value="1" />
-        <el-option :label="t('启用')" :value="0" />
+        <el-option :label="t('禁用')" :value="0" />
+        <el-option :label="t('启用')" :value="1" />
       </el-select>
     </el-form-item>
 
@@ -78,8 +78,6 @@ const props = defineProps<{
 const selectDate = ref('');
 const formRef = ref();
 const emits = defineEmits(['onSearch']);
-
-
 
 const resetForm = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
