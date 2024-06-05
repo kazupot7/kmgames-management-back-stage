@@ -7,6 +7,6 @@ export const user = {
 
   getRouter: (data: { id: number }) => http.request<UserAPI.RouterResType>("post", "/sysRole/v1/getResourcelist", { data }),
 
-  me: () => http.request<UserAPI.Login_User>("get", "/user/v1/me"),
-
+  //- 退出登录
+  loginOut: (data: { id: number, name: string }) => http.request<UserAPI.RouterResType>("post", "/auth/loginOut", { data }),
 };
