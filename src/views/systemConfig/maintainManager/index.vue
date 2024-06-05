@@ -1,10 +1,6 @@
 <template>
   <div class="main">
-    <PureTableBar
-      :columns="columns"
-      @refresh="onSearch('reload')"
-      :title="t('维护设置')"
-    >
+    <PureTableBar :columns="columns" @refresh="onSearch" :title="t('维护设置')">
       <template v-slot="{ size, dynamicColumns }">
         <pure-table
           align-whole="center"

@@ -1,5 +1,4 @@
 import { message } from '@/utils/message';
-import type { PaginationProps } from '@pureadmin/table';
 import { reactive, ref, onMounted } from 'vue';
 import { ElMessageBox } from 'element-plus';
 
@@ -7,16 +6,8 @@ export function useMaintainHook() {
   const dataList = reactive<SysTemConfigAPI.sysMainList[]>([]);
   const loading = ref(true);
 
-  const pagination = reactive<PaginationProps>({
-    total: 0,
-    pageSize: 10,
-    currentPage: 1,
-    background: true
-  });
-
   //- 初始化
-  async function onSearch(type?: string) {
-    if (type === 'reload') pagination.currentPage = 1;
+  async function onSearch() {
     try {
       loading.value = true;
       const res = await API.sysMaintainList();
@@ -25,7 +16,6 @@ export function useMaintainHook() {
       dataList.length = 0;
       dataList.push(...res.data.list);
       dataList.forEach(item => (item.status = item.status === 1));
-      pagination.total = res.data.total;
     } catch (error) {
       loading.value = false;
     }
@@ -47,7 +37,8 @@ export function useMaintainHook() {
         .then(async () => {
           const res = await API.sysMaintainUpdateStatus({
             status: +row.status === 0 ? 1 : 0,
-            id: row.id
+            id: row.id,
+            platformType: row.platformType
           });
           if (res.code) {
             reject();
