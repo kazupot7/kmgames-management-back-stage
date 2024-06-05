@@ -117,7 +117,7 @@ declare namespace TenantAPI {
   }
 
   type SaveWhiteType = {
-    id?: string | number;
+    id: string | number;
     tenantId?: string | number;
     tenantCode?: string | number;
     whiteIp?: string | number;

@@ -84,7 +84,7 @@ export function useWhiteHook() {
             whiteIp: row?.whiteIp ?? '',
             effectType: row?.effectType ?? '',
             applyBy: row?.applyBy ?? '',
-            status: row?.status ?? 0
+            status: row?.status ?? true
           },
           tenantList,
           onCloseDialog: (closeType?: string) => {
