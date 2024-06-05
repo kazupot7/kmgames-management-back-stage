@@ -26,7 +26,7 @@
           <template v-slot:node-label>
             <div class="flex items-center">
               <span class="text-sm font-bold">
-                {{ t(data.name) }}
+                {{ data.name }}
               </span>
             </div>
           </template>
@@ -74,11 +74,23 @@ const initTreeList = async () => {
   menusData.length = 0;
   menusData.push(...res.data);
   defaultKeyList.length = 0;
+  filterHalfChecked(menusData);
   checkIsInitSelected(menusData);
   nextTick(() => {
     treeRef.value!.setCheckedKeys(defaultKeyList);
   });
 };
+
+//- 判断是否为半选中状态
+const filterHalfChecked = menusData => {
+  menusData.forEach(item => {
+    if (item.childResourceList.length) {
+      filterHalfChecked(item.childResourceList);
+      item.resourceFlag = item.childResourceList.every(_ => _.resourceFlag);
+    }
+  });
+};
+
 //- 判断是否初始化被选中
 const checkIsInitSelected = (list: RoleAPI.ChildResourceList[]) => {
   list.forEach(item => {
@@ -92,7 +104,7 @@ const checkIsInitSelected = (list: RoleAPI.ChildResourceList[]) => {
 //- 保存选中内容
 const saveRole = async () => {
   const resourceList = treeRef
-    .value!.getCheckedNodes(false, false)
+    .value!.getCheckedNodes(false, true)
     .map(item => item.id);
 
   const res = await API.updateRoleResource({

@@ -4,9 +4,14 @@
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
-        <el-button type="primary" @click="openRoleDialog(t('新增角色'))">
+        <el-button
+          v-if="hasAuth('ROLEMANAGERADD')"
+          type="primary"
+          @click="openRoleDialog(t('新增角色'))"
+        >
           {{ t('新增角色') }}
         </el-button>
+        <div v-else></div>
       </template>
       <template v-slot="{ size, dynamicColumns }">
         <pure-table
@@ -46,6 +51,7 @@
               {{ t('权限设置') }}
             </el-button>
             <el-button
+              v-if="hasAuth('ROLEMANAGERUPDATE')"
               class="reset-margin"
               link
               type="primary"
@@ -55,6 +61,7 @@
               {{ t('编辑') }}
             </el-button>
             <el-button
+              v-if="hasAuth('ROLEMANAGERDELETE')"
               class="reset-margin"
               link
               type="danger"
@@ -76,6 +83,7 @@ import { useRoleHook } from './utils/hook';
 import SearchForm from './component/SearchForm.vue';
 import { t } from '@/plugins/i18n';
 import { usePublicHooks } from '@/hooks';
+import { hasAuth } from '@/router/utils';
 
 defineOptions({ name: 'MEMBER' });
 const { tableHeaderStyle } = usePublicHooks();
