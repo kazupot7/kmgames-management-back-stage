@@ -11,7 +11,7 @@ import {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { formatToken, TokenKey } from "@/utils/auth";
+import { TokenKey } from "@/utils/auth";
 import { storageSession } from "@pureadmin/utils";
 import { useUserStore } from "@/store/user";
 

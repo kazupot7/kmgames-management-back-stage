@@ -124,15 +124,20 @@ const _loginRequest = async () => {
     loading.value = false;
     if (res.code) return message(res.msg, { type: 'error' });
     //- 第一次登录强制弹出充值密码弹窗
-    message(t('登录成功'), { type: 'success' });
     userStore.setUserInfo(res.data);
+
     if (ruleForm.password === '123456') {
       ruleForm.password = '';
       return openResetDialog();
     }
-    initRouter().then(() => {
-      router.push(getTopMenu(true).path);
-    });
+    initRouter()
+      .then(() => {
+        message(t('登录成功'), { type: 'success' });
+        router.push(getTopMenu(true).path);
+      })
+      .catch(err => {
+        message(err, { type: 'error' });
+      });
   } catch (error) {
     message(error.message, { type: 'error' });
     loading.value = false;
