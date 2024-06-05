@@ -16,7 +16,7 @@ import { storageSession } from "@pureadmin/utils";
 import { useUserStore } from "@/store/user";
 
 const defaultConfig: AxiosRequestConfig = {
-  baseURL: '/management/kmg',
+  baseURL: '/management/control',
   timeout: 20000,
   headers: {
     Accept: "application/json, text/plain, */*",

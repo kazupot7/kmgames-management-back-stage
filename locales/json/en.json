@@ -34,9 +34,7 @@
   "k-77e23bd2": "Please enter your password",
   "k-1ef73c97": "Login successful",
   "k2695488c": "Enter your username",
-  "k240c0307": "Please enter a username in email format",
   "k25c895d5": "Please enter your password",
-  "k-45a07fe1": "Password has to be a numeric combination of 8-18",
   "k61b489d6": "Match Level",
   "k2751ca1b": "Match Type",
   "k50d471b2": "Reset",
@@ -566,5 +564,10 @@
   "k4b41fa3c": "Maintenance Time",
   "k-7fa68ef4": "Maintenance Settings",
   "k-1cb99141": "Are you sure you want to turn off maintenance mode?",
-  "k-4a3f036": "Are you sure you want to turn on maintenance mode?"
+  "k-4a3f036": "Are you sure you want to turn on maintenance mode?",
+  "k-71545e88": "操作提示",
+  "k-152fd70": "角色底下还有用户，不可删除",
+  "k2158b99f": "操作无效",
+  "k33b47396": "朕知道了",
+  "k6d26ed25": "There are still {n} users in this role, disabling this role will prevent these users from accessing the system. Do you want to continue?"
 }
