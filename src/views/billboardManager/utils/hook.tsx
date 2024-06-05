@@ -85,7 +85,7 @@ export function useBillboardManager() {
             billboardTypeEn: row?.billboardTypeEn ?? '',
             billboardContentCn: row?.billboardContentCn ?? '',
             billboardContentEn: row?.billboardContentEn ?? '',
-            billClassify: row?.billClassify ?? -1,
+            billClassify: row?.billClassify ?? '',
             id: row?.id ?? ''
           },
           onCloseDialog: (closeType?: string) => {

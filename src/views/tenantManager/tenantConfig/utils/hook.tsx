@@ -12,6 +12,7 @@ export function useTenantHook() {
   const loading = ref(true);
   const switchLoadMap = ref({});
   const { switchStyle } = usePublicHooks();
+  const tenantList = reactive<TenantAPI.getAllSimplifiedTenant[]>([]);
   const pagination = reactive<PaginationProps>({
     total: 0,
     pageSize: 10,
@@ -35,6 +36,14 @@ export function useTenantHook() {
     pagination.currentPage = val;
     onSearch();
   }
+
+  //- 获取账号列表
+  const initAccountList = async () => {
+    const res = await API.getAllSimplifiedTenants();
+    if (res.code) return;
+    tenantList.length = 0;
+    tenantList.push(...res.data);
+  };
 
   //- 初始化
   async function onSearch(type?: string) {
@@ -92,7 +101,10 @@ export function useTenantHook() {
           },
           onCloseDialog(type: 'reload') {
             closeDialog(options, index);
-            if (type) onSearch(type);
+            if (type) {
+              initAccountList();
+              onSearch(type);
+            }
           }
         })
     });
@@ -137,26 +149,31 @@ export function useTenantHook() {
     }).then(async () => {
       const res = await API.deleteTenants({ id: row.id });
       message(res.msg, { type: res.code ? 'error' : 'success' });
-      if (!res.code) onSearch();
+      if (!res.code) {
+        onSearch();
+        initAccountList();
+      }
     });
   };
 
   onMounted(() => {
     onSearch();
+    initAccountList();
   });
   return {
+    form,
     loading,
     columns,
     dataList,
     pagination,
+    tenantList,
+    switchLoadMap,
+    switchStyle,
     onSearch,
     handleTableWidthChange,
-    switchLoadMap,
     handleCurrentChange,
     openDialog,
-    switchStyle,
     updateTenantStatus,
-    form,
     delTenantClick
   };
 }

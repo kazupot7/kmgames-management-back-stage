@@ -8,6 +8,7 @@
         :rules="formRules"
         class="pr-10"
         label-width="100px"
+        :hide-required-asterisk="lan !== 'zh'"
       >
         <el-form-item :label="`${t('公告分类')}:`" prop="billClassify">
           <el-select v-model="newFormInline.billClassify" clearable filterable>
@@ -20,10 +21,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item
-          :label="`${t('公告标题')}:`"
-          :prop="lan === 'zh' ? 'billboardTitleCn' : 'billboardTitleEn'"
-        >
+        <el-form-item :label="`${t('公告标题')}:`" :prop="'billboardTitleCn'">
           <LanguageInput
             :placeholder="t('请输入公告标题')"
             v-model:cnVal="newFormInline.billboardTitleCn"
@@ -33,10 +31,7 @@
           />
         </el-form-item>
 
-        <el-form-item
-          :label="`${t('公告类型')}:`"
-          :prop="lan === 'zh' ? 'billboardTypeCn' : 'billboardTypeEn'"
-        >
+        <el-form-item :label="`${t('公告类型')}:`" :prop="'billboardTypeCn'">
           <LanguageInput
             :placeholder="t('请输入公告类型')"
             v-model:cnVal="newFormInline.billboardTypeCn"
@@ -46,10 +41,7 @@
           />
         </el-form-item>
 
-        <el-form-item
-          :label="`${t('公告内容')}:`"
-          :prop="lan === 'zh' ? 'billboardContentCn' : 'billboardContentEn'"
-        >
+        <el-form-item :label="`${t('公告内容')}:`" :prop="'billboardContentCn'">
           <LanguageInput
             :placeholder="t('请输入公告内容')"
             v-model:cnVal="newFormInline.billboardContentCn"
@@ -103,6 +95,15 @@ const closeDialog = () => {
   emits('closeDialog');
 };
 
+watch(
+  () => commonStore.inputLanType,
+  v => {
+    if (v !== 'zh') {
+      ruleFormRef.value?.clearValidate();
+    }
+  }
+);
+
 const confirmClick = () => {
   ruleFormRef.value?.validate(async v => {
     if (v) {
@@ -122,6 +123,9 @@ const confirmClick = () => {
             }
           })
       });
+    } else {
+      //- 重置到中文
+      commonStore.set_input_lan_type('zh');
     }
   });
 };

@@ -1,6 +1,11 @@
 <template>
   <div class="main">
-    <SearchForm :loading="loading" @onSearch="onSearch" :form="form" />
+    <SearchForm
+      :loading="loading"
+      @onSearch="onSearch"
+      :form="form"
+      :tenantList="tenantList"
+    />
 
     <PureTableBar :columns="columns" @refresh="onSearch('reload')">
       <template #title>
@@ -77,10 +82,11 @@ const {
   columns,
   dataList,
   pagination,
+  form,
+  tenantList,
   onSearch,
   handleTableWidthChange,
   handleCurrentChange,
-  form,
   openDialog,
   updateTenantStatus,
   delTenantClick
